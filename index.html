@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JMates – Mates y momentos | Mendoza, Argentina</title>
+<meta name="description" content="Mates estilo uruguayo, yerba y accesorios para tu ronda. Hecho con calidad y atención personalizada. Envíos a todo el país desde Mendoza, Argentina." />
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          yerba: { DEFAULT: '#2F6A39', light: '#4F9A48', dark: '#214E29', deep: '#2F4A33' },
+          arena: '#F2EAD9',
+          crema: '#FFFBF2',
+          cobre: { DEFAULT: '#BE7240', dark: '#A35F31' },
+          tinta: '#26291F',
+          salvia: '#B7C4A8',
+        },
+        fontFamily: {
+          display: ['Fraunces', 'serif'],
+          sans: ['"Work Sans"', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'monospace'],
+        },
+      },
+    },
+  };
+</script>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* Smooth scroll only when the visitor welcomes motion */
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+  section[id] { scroll-margin-top: 5.5rem; }
+
+  /* Readable, balanced text blocks */
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+
+  /* ---- Keyboard focus: visible & consistent on every surface ---- */
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid #BE7240;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  /* Copper rings disappear on copper buttons — use cream there */
+  .bg-cobre:focus-visible,
+  #btn-whatsapp-float:focus-visible {
+    outline-color: #FFFBF2;
+  }
+  summary { -webkit-tap-highlight-color: transparent; }
+  summary:focus { outline: none; }
+
+  /* Price tag: small market-label badge with a "hole" */
+  .precio-tag {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transform: rotate(-2deg);
+  }
+  .precio-tag::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: #F2EAD9;
+    flex-shrink: 0;
+  }
+
+  /* Dashed orbit ring for hero visual */
+  .orbit-ring {
+    border: 2px dashed rgba(183, 196, 168, 0.5);
+  }
+
+  /* Catalog filter active state */
+  .filtro-activo {
+    background-color: #2F6A39;
+    color: #FFFBF2;
+  }
+  .filtro-btn { transition: background-color .18s ease, color .18s ease, border-color .18s ease; }
+  .filtro-btn:not(.filtro-activo):hover { border-color: rgba(47,106,57,0.5); background-color: rgba(47,106,57,0.06); }
+
+  /* Kit option selected state */
+  .kit-opcion.seleccionada {
+    border-color: #BE7240;
+    background-color: rgba(190, 114, 64, 0.08);
+    box-shadow: 0 0 0 1px #BE7240;
+  }
+
+  /* ---- Micro-interactions (suppressed under reduced-motion) ---- */
+  @media (prefers-reduced-motion: no-preference) {
+    .cat-btn, .kit-opcion, .card-lift, .btn-press, #btn-whatsapp-float {
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background-color .2s ease;
+    }
+    .cat-btn:hover    { transform: translateY(-3px); }
+    .cat-btn:active   { transform: translateY(-1px); }
+    .card-lift:hover  { transform: translateY(-4px); }
+    .kit-opcion:hover { transform: translateY(-2px); }
+    .kit-opcion:active{ transform: translateY(0); }
+    .btn-press:hover  { transform: translateY(-2px); }
+    .btn-press:active { transform: translateY(0); }
+    #btn-whatsapp-float:hover { transform: translateY(-3px) scale(1.04); }
+  }
+  /* Hover affordances that are safe to keep without motion */
+  .kit-opcion:hover { border-color: rgba(190,114,64,0.55); }
+  .card-lift:hover  { box-shadow: 0 18px 34px -20px rgba(38,41,31,0.55); }
+  .btn-press:hover  { box-shadow: 0 14px 26px -16px rgba(38,41,31,0.55); }
+  .btn-press        { will-change: transform; }
+
+  /* FAQ chevron rotation (instant when motion is reduced) */
+  details[open] .faq-chevron { transform: rotate(180deg); }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-chevron { transition: none !important; }
+  }
+
+  /* ---- Hero "ronda": orbiting badges ---- */
+  .sat {
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+  .orbita { transform-origin: 50% 50%; }
+  @media (prefers-reduced-motion: no-preference) {
+    .orbita    { animation: orbit-spin 48s linear infinite; }
+    .badge-rot { animation: orbit-counter 48s linear infinite; }
+  }
+  @keyframes orbit-spin    { to { transform: rotate(360deg); } }
+  @keyframes orbit-counter { to { transform: rotate(-360deg); } }
+  .orbita:hover { animation-play-state: paused; }
+  .orbita:hover .badge-rot { animation-play-state: paused; }
+
+  /* ---- Hero "ronda": rising steam ---- */
+  .steam-wisp { opacity: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    .steam-wisp { animation: steam-rise 3.6s ease-in-out infinite; }
+    .steam-2 { animation-delay: 1.2s; animation-duration: 4.2s; }
+    .steam-3 { animation-delay: 2.2s; animation-duration: 3.9s; }
+  }
+  @keyframes steam-rise {
+    0%   { opacity: 0; transform: translateY(6px) scaleY(0.6); }
+    25%  { opacity: 0.85; }
+    70%  { opacity: 0.4; }
+    100% { opacity: 0; transform: translateY(-12px) scaleY(1.15); }
+  }
+
+  /* Hide scrollbar on mobile category strip */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Product photo slots: tint the empty-state on-brand */
+  .producto-foto image-slot { color: #3C5A40; }
+</style>
+</head>
+
+<body class="font-sans bg-arena text-tinta antialiased">
+
+<!-- ============ ICON SPRITE (hidden) ============ -->
+<svg class="hidden">
+  <!-- Mate (yerba mate gourd + bombilla). Real icon from OpenMoji 🧉 U+1F9C9,
+       "black/line" style, CC BY-SA 4.0 — https://openmoji.org. Recolored to
+       currentColor so it inherits the brand palette per context. -->
+  <symbol id="icon-mate" viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m37.2,30.8h16.42s8.005,10.28,8.211,16.97c.1908,6.208-2.786,14.34-9.316,18.08h-29.99c-6.53-3.74-9.507-11.88-9.316-18.08.2057-6.694,8.211-16.97,8.211-16.97h16.42"/>
+    <path d="m37.54,19.5l2.766-7.63c1.379-3.805,3.996-6.165,6.836-6.165h10.4"/>
+    <polyline points="21.42 30.8 21.42 23.5 53.62 23.5 53.62 30.8"/>
+  </symbol>
+
+  <symbol id="icon-steam" viewBox="0 0 24 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 44c0-6 6-8 6-14s-6-8-6-14 6-8 6-12"/>
+  </symbol>
+
+  <symbol id="icon-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+  </symbol>
+
+  <symbol id="icon-bombilla" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m6 8 1.75 12.28a2 2 0 0 0 2 1.72h4.54a2 2 0 0 0 2-1.72L18 8"/>
+    <path d="M5 8h14"/>
+    <path d="M7 15a6.47 6.47 0 0 1 5 0 6.47 6.47 0 0 0 5 0"/>
+    <path d="m12 8-1-6"/>
+  </symbol>
+
+  <symbol id="icon-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+  </symbol>
+
+  <symbol id="icon-combo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="8" width="18" height="4" rx="1"/>
+    <path d="M12 8v13"/>
+    <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
+    <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>
+  </symbol>
+
+  <symbol id="icon-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+    <circle cx="12" cy="13" r="3"/>
+  </symbol>
+
+  <symbol id="icon-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+  </symbol>
+
+  <symbol id="icon-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 18V6a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h2"/>
+    <path d="M15 18H9"/>
+    <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
+    <circle cx="17" cy="18" r="2"/>
+    <circle cx="7" cy="18" r="2"/>
+  </symbol>
+
+  <symbol id="icon-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+    <circle cx="12" cy="10" r="3"/>
+  </symbol>
+
+  <symbol id="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m6 9 6 6 6-6"/>
+  </symbol>
+
+  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="4" x2="20" y1="12" y2="12"/>
+    <line x1="4" x2="20" y1="6" y2="6"/>
+    <line x1="4" x2="20" y1="18" y2="18"/>
+  </symbol>
+
+  <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 6 6 18"/>
+    <path d="m6 6 12 12"/>
+  </symbol>
+</svg>
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-50 bg-yerba text-crema">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 flex items-center justify-between h-18 py-3">
+    <a href="#" class="flex items-center gap-3">
+      <span class="w-10 h-10 rounded-full bg-crema text-yerba flex items-center justify-center">
+        <svg class="w-6 h-6"><use href="#icon-mate"/></svg>
+      </span>
+      <span class="font-display font-semibold text-xl tracking-tight">JMates</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8 font-medium text-sm">
+      <a href="#catalogo" class="hover:text-salvia transition-colors">Catálogo</a>
+      <a href="#armar-kit" class="hover:text-salvia transition-colors">Armá tu kit</a>
+      <a href="#nosotros" class="hover:text-salvia transition-colors">Nosotros</a>
+      <a href="#envios" class="hover:text-salvia transition-colors">Envíos</a>
+      <a href="#preguntas" class="hover:text-salvia transition-colors">Preguntas</a>
+    </nav>
+
+    <a href="#" id="btn-whatsapp-header" target="_blank" rel="noopener"
+       class="btn-press hidden sm:inline-flex items-center gap-2 bg-cobre hover:bg-cobre-dark transition-colors text-crema text-sm font-semibold px-4 py-2 rounded-full">
+      <svg class="w-4 h-4"><use href="#icon-chat"/></svg>
+      Pedir por WhatsApp
+    </a>
+
+    <button id="btn-menu" class="md:hidden p-2" aria-label="Abrir menú">
+      <svg class="w-6 h-6"><use href="#icon-menu"/></svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="menu-mobile" class="hidden md:hidden border-t border-yerba-light/40 px-5 pb-4">
+    <nav class="flex flex-col gap-1 pt-3 font-medium text-sm">
+      <a href="#catalogo" class="py-2 hover:text-salvia transition-colors">Catálogo</a>
+      <a href="#armar-kit" class="py-2 hover:text-salvia transition-colors">Armá tu kit</a>
+      <a href="#nosotros" class="py-2 hover:text-salvia transition-colors">Nosotros</a>
+      <a href="#envios" class="py-2 hover:text-salvia transition-colors">Envíos</a>
+      <a href="#preguntas" class="py-2 hover:text-salvia transition-colors">Preguntas</a>
+      <a href="#" id="btn-whatsapp-mobile" target="_blank" rel="noopener"
+         class="btn-press mt-2 inline-flex items-center justify-center gap-2 bg-cobre hover:bg-cobre-dark transition-colors text-crema text-sm font-semibold px-4 py-2.5 rounded-full">
+        <svg class="w-4 h-4"><use href="#icon-chat"/></svg>
+        Pedir por WhatsApp
+      </a>
+    </nav>
+  </div>
+
+  <!-- Scroll progress bar -->
+  <div class="h-1 bg-yerba-dark/50">
+    <div id="scroll-progress" class="h-full bg-cobre origin-left" style="transform:scaleX(0)"></div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="bg-yerba text-crema overflow-hidden">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+    <div>
+      <p class="uppercase tracking-[0.2em] text-xs font-semibold text-salvia mb-5 flex items-center gap-2">
+        <svg class="w-4 h-4"><use href="#icon-pin"/></svg>
+        Mendoza, Argentina
+      </p>
+      <h1 class="font-display font-semibold text-5xl sm:text-6xl leading-[1.04] tracking-tight mb-6">
+        Mates y<br><span class="italic font-medium text-salvia">momentos.</span>
+      </h1>
+      <p class="text-lg leading-relaxed text-arena/95 max-w-md mb-8">
+        Mates estilo uruguayo, yerbas seleccionadas y todo lo que necesitás para tu ronda.
+        Hecho a pulmón en Mendoza, con envíos a todo el país.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="#catalogo" class="btn-press inline-flex items-center gap-2 bg-cobre hover:bg-cobre-dark transition-colors text-crema font-semibold px-6 py-3 rounded-full">
+          Ver catálogo
+        </a>
+        <a href="#" id="btn-whatsapp-hero" target="_blank" rel="noopener"
+           class="btn-press inline-flex items-center gap-2 border border-crema/30 hover:border-crema hover:bg-crema/5 transition-colors text-crema font-semibold px-6 py-3 rounded-full">
+          <svg class="w-4 h-4"><use href="#icon-chat"/></svg>
+          Escribinos
+        </a>
+      </div>
+    </div>
+
+    <!-- "La ronda" visual -->
+    <div class="relative w-full max-w-[15rem] sm:max-w-sm mx-auto aspect-square">
+      <div class="absolute inset-0 rounded-full orbit-ring"></div>
+      <div class="absolute inset-[12%] rounded-full bg-yerba-light/40 flex items-center justify-center">
+        <div class="relative w-2/3 aspect-square rounded-full bg-crema text-yerba flex items-center justify-center shadow-xl">
+          <!-- rising steam -->
+          <div class="steam absolute left-1/2 -translate-x-1/2 top-[14%] flex items-end gap-1.5 text-yerba/35 pointer-events-none" aria-hidden="true">
+            <svg class="steam-wisp steam-1 w-2.5 h-8"><use href="#icon-steam"/></svg>
+            <svg class="steam-wisp steam-2 w-2.5 h-9"><use href="#icon-steam"/></svg>
+            <svg class="steam-wisp steam-3 w-2.5 h-8"><use href="#icon-steam"/></svg>
+          </div>
+          <svg class="w-20 h-20 relative"><use href="#icon-mate"/></svg>
+        </div>
+      </div>
+      <!-- orbiting badges -->
+      <div class="orbita absolute inset-0" aria-hidden="true">
+        <div class="sat" style="left:50%;top:0%">
+          <div class="badge-rot">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-cobre text-crema flex items-center justify-center shadow-lg">
+              <svg class="w-5 h-5 sm:w-7 sm:h-7"><use href="#icon-leaf"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="sat" style="left:93.3%;top:75%">
+          <div class="badge-rot">
+            <div class="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-salvia text-yerba-dark flex items-center justify-center shadow-lg">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6"><use href="#icon-bombilla"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="sat" style="left:6.7%;top:75%">
+          <div class="badge-rot">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-arena text-yerba flex items-center justify-center shadow-lg">
+              <svg class="w-5 h-5 sm:w-7 sm:h-7"><use href="#icon-combo"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATEGORIES ============ -->
+<section class="bg-arena">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
+    <h2 class="font-display font-semibold text-2xl sm:text-3xl tracking-tight mb-7">¿Qué estás buscando?</h2>
+    <div class="flex gap-4 overflow-x-auto no-scrollbar pt-1 pb-3 sm:grid sm:grid-cols-4 sm:overflow-visible">
+      <button data-cat="mate" class="cat-btn flex-shrink-0 w-36 sm:w-auto flex flex-col items-center gap-3 bg-crema rounded-2xl p-5 hover:shadow-md transition-shadow">
+        <span class="w-14 h-14 rounded-full bg-yerba text-crema flex items-center justify-center"><svg class="w-7 h-7"><use href="#icon-mate"/></svg></span>
+        <span class="font-semibold text-sm text-center leading-snug">Mates estilo uruguayo</span>
+      </button>
+      <button data-cat="yerba" class="cat-btn flex-shrink-0 w-36 sm:w-auto flex flex-col items-center gap-3 bg-crema rounded-2xl p-5 hover:shadow-md transition-shadow">
+        <span class="w-14 h-14 rounded-full bg-yerba text-crema flex items-center justify-center"><svg class="w-7 h-7"><use href="#icon-leaf"/></svg></span>
+        <span class="font-semibold text-sm text-center leading-snug">Yerba mate</span>
+      </button>
+      <button data-cat="bombilla" class="cat-btn flex-shrink-0 w-36 sm:w-auto flex flex-col items-center gap-3 bg-crema rounded-2xl p-5 hover:shadow-md transition-shadow">
+        <span class="w-14 h-14 rounded-full bg-yerba text-crema flex items-center justify-center"><svg class="w-7 h-7"><use href="#icon-bombilla"/></svg></span>
+        <span class="font-semibold text-sm text-center leading-snug">Bombillas</span>
+      </button>
+      <button data-cat="combo" class="cat-btn flex-shrink-0 w-36 sm:w-auto flex flex-col items-center gap-3 bg-crema rounded-2xl p-5 hover:shadow-md transition-shadow">
+        <span class="w-14 h-14 rounded-full bg-yerba text-crema flex items-center justify-center"><svg class="w-7 h-7"><use href="#icon-combo"/></svg></span>
+        <span class="font-semibold text-sm text-center leading-snug">Combos / Momento Mate</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATALOG ============ -->
+<section id="catalogo" class="bg-crema">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+      <div>
+        <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-2">Catálogo</h2>
+        <p class="text-tinta/70 leading-relaxed">Tocá un producto para pedirlo directo por WhatsApp.</p>
+      </div>
+    </div>
+
+    <!-- Filter tabs -->
+    <div id="filtros" class="flex flex-wrap gap-2 mb-10">
+      <button data-filter="todos" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Todos</button>
+      <button data-filter="mate" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Mates</button>
+      <button data-filter="yerba" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Yerbas</button>
+      <button data-filter="bombilla" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Bombillas</button>
+      <button data-filter="combo" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Combos</button>
+    </div>
+
+    <div id="grid-catalogo" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </div>
+</section>
+
+<!-- ============ ARMÁ TU KIT ============ -->
+<section id="armar-kit" class="bg-yerba text-crema">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
+    <div class="max-w-2xl mb-12">
+      <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-3">Armá tu kit</h2>
+      <p class="text-arena/90 leading-relaxed">
+        Elegí tu mate, tu bombilla y tu yerba. Te armamos el pedido completo y te lo
+        mandamos listo a WhatsApp para confirmar.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6 lg:gap-8 mb-8">
+      <div>
+        <h3 class="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5"><use href="#icon-mate"/></svg> 1. Elegí tu mate
+        </h3>
+        <div id="kit-mate" class="space-y-3"></div>
+      </div>
+      <div>
+        <h3 class="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5"><use href="#icon-bombilla"/></svg> 2. Elegí tu bombilla
+        </h3>
+        <div id="kit-bombilla" class="space-y-3"></div>
+      </div>
+      <div>
+        <h3 class="font-display font-semibold text-lg mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5"><use href="#icon-leaf"/></svg> 3. Elegí tu yerba
+        </h3>
+        <div id="kit-yerba" class="space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="bg-yerba-dark rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+      <div>
+        <p class="text-sm uppercase tracking-widest text-salvia mb-2">Tu kit</p>
+        <p id="kit-resumen" class="text-arena/90 leading-relaxed">Elegí un producto de cada categoría para armar tu kit.</p>
+      </div>
+      <div class="flex flex-col items-start sm:items-end gap-3 flex-shrink-0">
+        <p id="kit-total" class="font-display font-semibold text-3xl"></p>
+        <a href="#" id="btn-pedir-kit" target="_blank" rel="noopener"
+           class="btn-press pointer-events-none opacity-40 inline-flex items-center gap-2 bg-cobre hover:bg-cobre-dark text-crema font-semibold px-6 py-3 rounded-full transition-opacity">
+          <svg class="w-4 h-4"><use href="#icon-chat"/></svg>
+          Pedir este kit por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NOSOTROS ============ -->
+<section id="nosotros" class="bg-arena">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+    <div class="order-2 md:order-1">
+      <p class="uppercase tracking-[0.2em] text-xs font-semibold text-cobre-dark mb-4">Nuestra historia</p>
+      <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-5">De Mendoza para toda la Argentina</h2>
+      <p class="text-tinta/80 mb-4 leading-relaxed">
+        JMates nació de una pasión simple: la ronda de mate de todos los días. Empezamos
+        eligiendo mates uno por uno, probando yerbas y bombillas hasta encontrar las que
+        de verdad valían la pena, y hoy las compartimos con cientos de personas en toda
+        Mendoza y el resto del país.
+      </p>
+      <p class="text-tinta/80 leading-relaxed">
+        Nos especializamos en <strong>mates estilo uruguayo</strong> — calabazas
+        forradas en cuero con guardas y virolas — y en yerbas que elegimos personalmente.
+        Cada pedido lo armamos con la misma atención que le pondríamos a un amigo.
+      </p>
+    </div>
+    <div class="order-1 md:order-2">
+      <div class="aspect-square rounded-full bg-yerba/10 border-2 border-dashed border-yerba/30 flex items-center justify-center mx-auto max-w-xs">
+        <div class="w-2/3 aspect-square rounded-full bg-yerba text-crema flex flex-col items-center justify-center gap-2 shadow-lg">
+          <svg class="w-16 h-16"><use href="#icon-camera"/></svg>
+          <span class="text-xs text-arena/70 px-4 text-center">Foto del local / del equipo acá</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENVÍOS ============ -->
+<section id="envios" class="bg-crema">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
+    <div class="max-w-2xl mb-12">
+      <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-3 flex items-center gap-3">
+        <svg class="w-8 h-8 text-cobre-dark shrink-0"><use href="#icon-truck"/></svg>
+        Envíos a todo el país
+      </h2>
+      <p class="text-tinta/70 leading-relaxed">
+        Despachamos desde Mendoza por correo y empresas de encomienda. El costo final
+        se calcula según tu código postal y te lo confirmamos por WhatsApp antes de cerrar el pedido.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-arena rounded-2xl p-5">
+        <p class="font-display font-semibold text-lg mb-1">Mendoza (retiro)</p>
+        <p class="text-sm text-tinta/70 mb-3">Coordinamos punto de encuentro o envío local.</p>
+        <p class="precio-tag bg-yerba text-crema font-mono text-sm font-semibold px-3 py-1.5 rounded">Sin cargo</p>
+      </div>
+      <div class="bg-arena rounded-2xl p-5">
+        <p class="font-display font-semibold text-lg mb-1">Cuyo / Centro</p>
+        <p class="text-sm text-tinta/70 mb-3">San Juan, San Luis, Córdoba, Sta. Fe.</p>
+        <p class="precio-tag bg-yerba text-crema font-mono text-sm font-semibold px-3 py-1.5 rounded">Desde $4.000 · 2-4 días</p>
+      </div>
+      <div class="bg-arena rounded-2xl p-5">
+        <p class="font-display font-semibold text-lg mb-1">CABA / GBA</p>
+        <p class="text-sm text-tinta/70 mb-3">Buenos Aires y alrededores.</p>
+        <p class="precio-tag bg-yerba text-crema font-mono text-sm font-semibold px-3 py-1.5 rounded">Desde $5.500 · 3-5 días</p>
+      </div>
+      <div class="bg-arena rounded-2xl p-5">
+        <p class="font-display font-semibold text-lg mb-1">Resto del país</p>
+        <p class="text-sm text-tinta/70 mb-3">Norte, Patagonia y demás provincias.</p>
+        <p class="precio-tag bg-yerba text-crema font-mono text-sm font-semibold px-3 py-1.5 rounded">A confirmar · 4-7 días</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PREGUNTAS FRECUENTES ============ -->
+<section id="preguntas" class="bg-arena">
+  <div class="max-w-3xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
+    <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-10">Preguntas frecuentes</h2>
+
+    <div class="space-y-3">
+      <details class="group bg-crema rounded-2xl p-5 sm:p-6 transition-shadow hover:shadow-md">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold list-none">
+          ¿Cómo hago un pedido?
+          <svg class="w-5 h-5 shrink-0 text-cobre-dark faq-chevron transition-transform"><use href="#icon-chevron"/></svg>
+        </summary>
+        <p class="mt-3 text-tinta/75 leading-relaxed">
+          Elegís el producto en el catálogo (o armás tu kit) y te lleva directo a WhatsApp
+          con el mensaje listo. Desde ahí coordinamos pago y envío.
+        </p>
+      </details>
+
+      <details class="group bg-crema rounded-2xl p-5 sm:p-6 transition-shadow hover:shadow-md">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold list-none">
+          ¿Qué métodos de pago aceptan?
+          <svg class="w-5 h-5 shrink-0 text-cobre-dark faq-chevron transition-transform"><use href="#icon-chevron"/></svg>
+        </summary>
+        <p class="mt-3 text-tinta/75 leading-relaxed">
+          Transferencia bancaria, Mercado Pago y efectivo en caso de retiro en Mendoza.
+          Te pasamos los datos por WhatsApp al confirmar el pedido.
+        </p>
+      </details>
+
+      <details class="group bg-crema rounded-2xl p-5 sm:p-6 transition-shadow hover:shadow-md">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold list-none">
+          ¿Los mates vienen curados?
+          <svg class="w-5 h-5 shrink-0 text-cobre-dark faq-chevron transition-transform"><use href="#icon-chevron"/></svg>
+        </summary>
+        <p class="mt-3 text-tinta/75 leading-relaxed">
+          Depende del modelo — te lo aclaramos en cada producto. Si preferís, te contamos
+          cómo curarlo vos mismo en casa, es más fácil de lo que parece.
+        </p>
+      </details>
+
+      <details class="group bg-crema rounded-2xl p-5 sm:p-6 transition-shadow hover:shadow-md">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold list-none">
+          ¿Hacen envíos a todo el país?
+          <svg class="w-5 h-5 shrink-0 text-cobre-dark faq-chevron transition-transform"><use href="#icon-chevron"/></svg>
+        </summary>
+        <p class="mt-3 text-tinta/75 leading-relaxed">
+          Sí, despachamos desde Mendoza a cualquier provincia. El costo y tiempo de
+          entrega varían según la zona — los vemos juntos por WhatsApp.
+        </p>
+      </details>
+
+      <details class="group bg-crema rounded-2xl p-5 sm:p-6 transition-shadow hover:shadow-md">
+        <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold list-none">
+          ¿Puedo seguirlos en Instagram para ver novedades?
+          <svg class="w-5 h-5 shrink-0 text-cobre-dark faq-chevron transition-transform"><use href="#icon-chevron"/></svg>
+        </summary>
+        <p class="mt-3 text-tinta/75 leading-relaxed">
+          Sí! En <strong>@jmates_mdz</strong> subimos fotos de productos nuevos,
+          combos y la vida del emprendimiento en Mendoza.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="bg-yerba-dark text-crema">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 sm:py-16 grid sm:grid-cols-3 gap-8 sm:gap-10">
+    <div>
+      <div class="flex items-center gap-3 mb-3">
+        <span class="w-10 h-10 rounded-full bg-crema text-yerba flex items-center justify-center">
+          <svg class="w-6 h-6"><use href="#icon-mate"/></svg>
+        </span>
+        <span class="font-display font-semibold text-xl">JMates</span>
+      </div>
+      <p class="text-arena/70 text-sm max-w-xs">Mates y momentos. Mendoza, Argentina.</p>
+    </div>
+
+    <div>
+      <p class="font-semibold mb-3 text-sm uppercase tracking-widest text-salvia">Navegación</p>
+      <nav class="flex flex-col gap-2 text-sm text-arena/80">
+        <a href="#catalogo" class="hover:text-crema transition-colors w-fit">Catálogo</a>
+        <a href="#armar-kit" class="hover:text-crema transition-colors w-fit">Armá tu kit</a>
+        <a href="#nosotros" class="hover:text-crema transition-colors w-fit">Nosotros</a>
+        <a href="#envios" class="hover:text-crema transition-colors w-fit">Envíos</a>
+        <a href="#preguntas" class="hover:text-crema transition-colors w-fit">Preguntas</a>
+      </nav>
+    </div>
+
+    <div>
+      <p class="font-semibold mb-3 text-sm uppercase tracking-widest text-salvia">Contacto</p>
+      <div class="flex flex-col gap-2 text-sm text-arena/80">
+        <a href="#" id="btn-whatsapp-footer" target="_blank" rel="noopener" class="hover:text-crema transition-colors flex items-center gap-2 w-fit">
+          <svg class="w-4 h-4"><use href="#icon-chat"/></svg> WhatsApp
+        </a>
+        <a href="https://www.instagram.com/jmates_mdz" target="_blank" rel="noopener" class="hover:text-crema transition-colors flex items-center gap-2 w-fit">
+          <svg class="w-4 h-4"><use href="#icon-instagram"/></svg> @jmates_mdz
+        </a>
+        <p class="flex items-center gap-2"><svg class="w-4 h-4"><use href="#icon-pin"/></svg> Mendoza, Argentina</p>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-crema/10 py-4 text-center text-xs text-arena/60">
+    © <span id="anio"></span> JMates · Mates y momentos
+  </div>
+</footer>
+
+<!-- Floating WhatsApp button -->
+<a href="#" id="btn-whatsapp-float" target="_blank" rel="noopener"
+   class="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full bg-cobre text-crema flex items-center justify-center shadow-xl hover:bg-cobre-dark transition-colors">
+  <svg class="w-7 h-7"><use href="#icon-chat"/></svg>
+</a>
+
+<script src="image-slot.js"></script>
+<script>
+  /* =====================================================================
+     CONFIGURACIÓN — EDITAR ACÁ
+  ===================================================================== */
+
+  // TODO: reemplazar por el número real de WhatsApp de JMates.
+  // Formato: 549 + código de área SIN el 0 + número SIN el 15.
+  // Ej: para Mendoza (261) 555-1234 -> "5492615551234"
+  const WHATSAPP_NUMBER = "5492610000000";
+
+  // TODO: reemplazar con el catálogo real (nombre, descripción, precio, foto).
+  // category: 'mate' | 'bombilla' | 'yerba' | 'combo'
+  // image: foto del producto en la carpeta images/ (relacionada con su nombre).
+  //        Reemplazá por tus propias fotos manteniendo el nombre de archivo.
+  const PRODUCTS = [
+    { id: 'mate-imperial',  category: 'mate',     name: 'Mate Imperial Uruguayo', desc: 'Calabaza forrada en cuero con virola de alpaca.', price: 32000,
+      image: 'images/mate-imperial.jpg' },
+    { id: 'mate-camionero', category: 'mate',     name: 'Mate Camionero',         desc: 'Calabaza grande forrada en cuero, ideal para uso diario.', price: 18500,
+      image: 'images/mate-camionero.jpg' },
+    { id: 'mate-torpedo',   category: 'mate',     name: 'Mate Torpedo',           desc: 'Calabaza alargada con guarda gauchesca grabada.', price: 24000,
+      image: 'images/mate-torpedo.jpg' },
+
+    { id: 'bombilla-alpaca',     category: 'bombilla', name: 'Bombilla de Alpaca Clásica', desc: 'Bombilla recta con filtro removible, terminación en alpaca.', price: 7500,
+      image: 'images/bombilla-alpaca.jpg' },
+    { id: 'bombilla-pico-loro',  category: 'bombilla', name: 'Bombilla Pico de Loro',      desc: 'Diseño curvo tradicional, fácil de limpiar.', price: 9000,
+      image: 'images/bombilla-pico-loro.jpg' },
+
+    { id: 'yerba-canarias',  category: 'yerba', name: 'Yerba Canarias Especial',   desc: 'Con palo, sabor intenso. Paquete de 1kg.', price: 4200,
+      image: 'images/yerba-canarias.jpg' },
+    { id: 'yerba-playadito', category: 'yerba', name: 'Yerba Playadito Suave',     desc: 'Suave y despalada, ideal para empezar. 1kg.', price: 3800,
+      image: 'images/yerba-playadito.jpg' },
+    { id: 'yerba-merced',    category: 'yerba', name: 'Yerba La Merced Despalada', desc: 'Sin palo, molienda fina. 1kg.', price: 4500,
+      image: 'images/yerba-merced.jpg' },
+
+    { id: 'kit-inicial', category: 'combo', name: 'Kit Iniciación',     desc: 'Mate + bombilla + yerba 500g. Todo para arrancar.', price: 28000,
+      image: 'images/kit-inicial.jpg' },
+    { id: 'kit-ronda',   category: 'combo', name: 'Kit Ronda Completa', desc: '2 mates + 2 bombillas + yerba 1kg. Ideal para compartir.', price: 55000,
+      image: 'images/kit-ronda.jpg' },
+  ];
+
+  const CATEGORY_ICONS = {
+    mate: 'icon-mate',
+    bombilla: 'icon-bombilla',
+    yerba: 'icon-leaf',
+    combo: 'icon-combo',
+  };
+
+  const CATEGORY_LABELS = {
+    mate: 'Mate',
+    bombilla: 'Bombilla',
+    yerba: 'Yerba',
+    combo: 'Combo',
+  };
+
+  /* =====================================================================
+     HELPERS
+  ===================================================================== */
+
+  function formatPrice(n) {
+    return '$ ' + n.toLocaleString('es-AR');
+  }
+
+  function buildWhatsAppUrl(message) {
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  }
+
+  function setWhatsAppLink(el, message) {
+    el.href = buildWhatsAppUrl(message);
+  }
+
+  // General "open chat" links (header, hero, footer, floating button)
+  const mensajeGeneral = "Hola! Vi su catálogo online y quería hacer una consulta sobre sus productos.";
+  ['btn-whatsapp-header','btn-whatsapp-mobile','btn-whatsapp-hero','btn-whatsapp-footer','btn-whatsapp-float']
+    .forEach(id => {
+      const el = document.getElementById(id);
+      if (el) setWhatsAppLink(el, mensajeGeneral);
+    });
+
+  /* =====================================================================
+     CATALOG
+  ===================================================================== */
+
+  const grid = document.getElementById('grid-catalogo');
+
+  function productCard(product) {
+    const card = document.createElement('div');
+    card.className = 'card-lift bg-arena rounded-2xl p-5 flex flex-col gap-4';
+    card.innerHTML = `
+      <div class="producto-foto aspect-square rounded-full overflow-hidden bg-yerba/5">
+        <img class="producto-img w-full h-full object-cover" loading="lazy" decoding="async"
+          src="${product.image || ''}" alt="Foto de ${product.name}">
+      </div>
+      <div class="flex-1">
+        <p class="text-xs uppercase tracking-widest text-cobre-dark font-semibold mb-1">${CATEGORY_LABELS[product.category]}</p>
+        <h3 class="font-display font-semibold text-lg leading-snug mb-1">${product.name}</h3>
+        <p class="text-sm leading-relaxed text-tinta/75">${product.desc}</p>
+      </div>
+      <div class="flex items-center justify-between gap-3">
+        <p class="precio-tag bg-cobre text-crema font-mono text-sm font-semibold px-3 py-1.5 rounded">${formatPrice(product.price)}</p>
+        <a href="#" class="btn-pedir-producto btn-press inline-flex items-center gap-2 bg-yerba text-crema text-sm font-semibold px-4 py-2 rounded-full hover:bg-yerba-light transition-colors" target="_blank" rel="noopener">
+          <svg class="w-4 h-4"><use href="#icon-chat"/></svg>
+          Pedir
+        </a>
+      </div>
+    `;
+    // Foto del producto (en images/, relacionada con su nombre). Si el archivo
+    // faltara, caemos a un <image-slot> arrastrable para no mostrar imagen rota.
+    const img = card.querySelector('.producto-img');
+    img.addEventListener('error', () => {
+      const slot = document.createElement('image-slot');
+      slot.id = `foto-${product.id}`;
+      slot.setAttribute('shape', 'circle');
+      slot.setAttribute('fit', 'cover');
+      slot.setAttribute('style', 'width:100%;height:100%;display:block');
+      slot.setAttribute('placeholder', `Foto: ${product.name}`);
+      img.replaceWith(slot);
+    }, { once: true });
+
+    const btn = card.querySelector('.btn-pedir-producto');
+    const msg = `Hola! Quiero hacer un pedido:\n\n${product.name} - ${formatPrice(product.price)}\n\n¿Me confirman disponibilidad y costo de envío?`;
+    setWhatsAppLink(btn, msg);
+    return card;
+  }
+
+  function renderCatalog(filter) {
+    grid.innerHTML = '';
+    const items = filter === 'todos' ? PRODUCTS : PRODUCTS.filter(p => p.category === filter);
+    items.forEach(p => grid.appendChild(productCard(p)));
+  }
+
+  // Filter tabs
+  const filtroBtns = document.querySelectorAll('.filtro-btn');
+  filtroBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filtroBtns.forEach(b => b.classList.remove('filtro-activo'));
+      btn.classList.add('filtro-activo');
+      renderCatalog(btn.dataset.filter);
+    });
+  });
+  // Default active tab
+  filtroBtns[0].classList.add('filtro-activo');
+  renderCatalog('todos');
+
+  // Category cards scroll + filter into catalog
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat;
+      const target = document.querySelector(`.filtro-btn[data-filter="${cat}"]`);
+      if (target) target.click();
+      document.getElementById('catalogo').scrollIntoView({ behavior: prefersReducedMotion.matches ? 'auto' : 'smooth' });
+    });
+  });
+
+  /* =====================================================================
+     SCROLL PROGRESS BAR (debajo del header)
+  ===================================================================== */
+  const progressBar = document.getElementById('scroll-progress');
+  if (progressBar) {
+    let ticking = false;
+    const updateProgress = () => {
+      const se = document.scrollingElement || document.documentElement;
+      const scrolled = window.scrollY || se.scrollTop || 0;
+      const max = se.scrollHeight - se.clientHeight;
+      const ratio = max > 0 ? Math.min(1, Math.max(0, scrolled / max)) : 0;
+      progressBar.style.transform = `scaleX(${ratio})`;
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (!ticking) { requestAnimationFrame(updateProgress); ticking = true; }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
+  }
+
+  /* =====================================================================
+     ARMÁ TU KIT
+  ===================================================================== */
+
+  const kitSelection = { mate: null, bombilla: null, yerba: null };
+
+  function kitOption(product) {
+    const div = document.createElement('div');
+    div.className = 'kit-opcion cursor-pointer border-2 border-yerba-light/40 rounded-xl p-4 flex items-center justify-between gap-3';
+    div.setAttribute('role', 'button');
+    div.setAttribute('tabindex', '0');
+    div.innerHTML = `
+      <div>
+        <p class="font-semibold">${product.name}</p>
+        <p class="text-sm text-arena/80">${product.desc}</p>
+      </div>
+      <p class="font-mono text-sm font-semibold whitespace-nowrap">${formatPrice(product.price)}</p>
+    `;
+    const select = () => {
+      kitSelection[product.category] = product;
+      document.querySelectorAll(`#kit-${product.category} .kit-opcion`).forEach(el => {
+        el.classList.remove('seleccionada');
+        el.setAttribute('aria-pressed', 'false');
+      });
+      div.classList.add('seleccionada');
+      div.setAttribute('aria-pressed', 'true');
+      updateKitSummary();
+    };
+    div.setAttribute('aria-pressed', 'false');
+    div.addEventListener('click', select);
+    div.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(); }
+    });
+    return div;
+  }
+
+  ['mate', 'bombilla', 'yerba'].forEach(cat => {
+    const container = document.getElementById(`kit-${cat}`);
+    PRODUCTS.filter(p => p.category === cat).forEach(p => container.appendChild(kitOption(p)));
+  });
+
+  function updateKitSummary() {
+    const resumenEl = document.getElementById('kit-resumen');
+    const totalEl = document.getElementById('kit-total');
+    const btnPedir = document.getElementById('btn-pedir-kit');
+
+    const seleccionados = ['mate', 'bombilla', 'yerba'].map(c => kitSelection[c]);
+    const elegidos = seleccionados.filter(Boolean);
+
+    if (elegidos.length === 0) {
+      resumenEl.textContent = 'Elegí un producto de cada categoría para armar tu kit.';
+      totalEl.textContent = '';
+      btnPedir.classList.add('pointer-events-none', 'opacity-40');
+      return;
+    }
+
+    resumenEl.innerHTML = elegidos.map(p => `• ${p.name}`).join('<br>');
+
+    const total = elegidos.reduce((sum, p) => sum + p.price, 0);
+    totalEl.textContent = formatPrice(total);
+
+    if (elegidos.length === 3) {
+      btnPedir.classList.remove('pointer-events-none', 'opacity-40');
+      const lines = elegidos.map(p => `- ${p.name} (${formatPrice(p.price)})`).join('\n');
+      const msg = `Hola! Quiero armar este kit:\n\n${lines}\n\nTotal: ${formatPrice(total)}\n\n¿Me confirman disponibilidad y costo de envío?`;
+      setWhatsAppLink(btnPedir, msg);
+    } else {
+      btnPedir.classList.add('pointer-events-none', 'opacity-40');
+    }
+  }
+
+  /* =====================================================================
+     MOBILE MENU
+  ===================================================================== */
+
+  const btnMenu = document.getElementById('btn-menu');
+  const menuMobile = document.getElementById('menu-mobile');
+  btnMenu.addEventListener('click', () => {
+    menuMobile.classList.toggle('hidden');
+    btnMenu.innerHTML = menuMobile.classList.contains('hidden')
+      ? '<svg class="w-6 h-6"><use href="#icon-menu"/></svg>'
+      : '<svg class="w-6 h-6"><use href="#icon-close"/></svg>';
+  });
+  // Close mobile menu after clicking a link
+  menuMobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    menuMobile.classList.add('hidden');
+    btnMenu.innerHTML = '<svg class="w-6 h-6"><use href="#icon-menu"/></svg>';
+  }));
+
+  /* =====================================================================
+     FOOTER YEAR
+  ===================================================================== */
+  document.getElementById('anio').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
