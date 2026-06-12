@@ -240,8 +240,8 @@
     </a>
 
     <nav class="hidden md:flex items-center gap-8 font-medium text-sm">
-      <a href="#catalogo" class="hover:text-salvia transition-colors">Catálogo</a>
       <a href="#armar-kit" class="hover:text-salvia transition-colors">Armá tu kit</a>
+      <a href="#catalogo" class="hover:text-salvia transition-colors">Catálogo</a>
       <a href="#nosotros" class="hover:text-salvia transition-colors">Nosotros</a>
       <a href="#envios" class="hover:text-salvia transition-colors">Envíos</a>
       <a href="#preguntas" class="hover:text-salvia transition-colors">Preguntas</a>
@@ -261,8 +261,8 @@
   <!-- Mobile menu -->
   <div id="menu-mobile" class="hidden md:hidden border-t border-yerba-light/40 px-5 pb-4">
     <nav class="flex flex-col gap-1 pt-3 font-medium text-sm">
-      <a href="#catalogo" class="py-2 hover:text-salvia transition-colors">Catálogo</a>
       <a href="#armar-kit" class="py-2 hover:text-salvia transition-colors">Armá tu kit</a>
+      <a href="#catalogo" class="py-2 hover:text-salvia transition-colors">Catálogo</a>
       <a href="#nosotros" class="py-2 hover:text-salvia transition-colors">Nosotros</a>
       <a href="#envios" class="py-2 hover:text-salvia transition-colors">Envíos</a>
       <a href="#preguntas" class="py-2 hover:text-salvia transition-colors">Preguntas</a>
@@ -330,56 +330,8 @@
   </div>
 </section>
 
-<!-- ============ CATEGORIES ============ -->
-<section class="bg-arena">
-  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
-    <h2 class="font-display font-semibold text-2xl sm:text-3xl tracking-tight mb-7">¿Qué estás buscando?</h2>
-    <div class="flex gap-4 overflow-x-auto no-scrollbar pt-1 pb-3 sm:grid sm:grid-cols-4 sm:overflow-visible">
-      <button data-cat="mate" class="cat-btn flex-shrink-0 w-36 sm:w-auto flex flex-col items-center gap-3 bg-crema rounded-2xl p-5 hover:shadow-md transition-shadow">
-        <span class="w-14 h-14 rounded-full bg-yerba text-crema flex items-center justify-center"><svg class="w-7 h-7"><use href="#icon-mate"/></svg></span>
-        <span class="font-semibold text-sm text-center leading-snug">Mates estilo uruguayo</span>
-      </button>
-      <button data-cat="yerba" class="cat-btn flex-shrink-0 w-36 sm:w-auto flex flex-col items-center gap-3 bg-crema rounded-2xl p-5 hover:shadow-md transition-shadow">
-        <span class="w-14 h-14 rounded-full bg-yerba text-crema flex items-center justify-center"><svg class="w-7 h-7"><use href="#icon-leaf"/></svg></span>
-        <span class="font-semibold text-sm text-center leading-snug">Yerba mate</span>
-      </button>
-      <button data-cat="bombilla" class="cat-btn flex-shrink-0 w-36 sm:w-auto flex flex-col items-center gap-3 bg-crema rounded-2xl p-5 hover:shadow-md transition-shadow">
-        <span class="w-14 h-14 rounded-full bg-yerba text-crema flex items-center justify-center"><svg class="w-7 h-7"><use href="#icon-bombilla"/></svg></span>
-        <span class="font-semibold text-sm text-center leading-snug">Bombillas</span>
-      </button>
-      <button data-cat="combo" class="cat-btn flex-shrink-0 w-36 sm:w-auto flex flex-col items-center gap-3 bg-crema rounded-2xl p-5 hover:shadow-md transition-shadow">
-        <span class="w-14 h-14 rounded-full bg-yerba text-crema flex items-center justify-center"><svg class="w-7 h-7"><use href="#icon-combo"/></svg></span>
-        <span class="font-semibold text-sm text-center leading-snug">Combos / Momento Mate</span>
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CATALOG ============ -->
-<section id="catalogo" class="bg-crema">
-  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
-    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
-      <div>
-        <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-2">Catálogo</h2>
-        <p class="text-tinta/70 leading-relaxed">Tocá un producto para pedirlo directo por WhatsApp.</p>
-      </div>
-    </div>
-
-    <!-- Filter tabs -->
-    <div id="filtros" class="flex flex-wrap gap-2 mb-10">
-      <button data-filter="todos" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Todos</button>
-      <button data-filter="mate" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Mates</button>
-      <button data-filter="yerba" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Yerbas</button>
-      <button data-filter="bombilla" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Bombillas</button>
-      <button data-filter="combo" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Combos</button>
-    </div>
-
-    <div id="grid-catalogo" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-  </div>
-</section>
-
 <!-- ============ ARMÁ TU KIT ============ -->
-<section id="armar-kit" class="bg-yerba text-crema">
+<section id="armar-kit" class="bg-yerba-dark text-crema">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
     <div class="max-w-2xl mb-12">
       <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-3">Armá tu kit</h2>
@@ -411,7 +363,7 @@
     </div>
 
     <!-- Summary -->
-    <div class="bg-yerba-dark rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+    <div class="bg-yerba rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
       <div>
         <p class="text-sm uppercase tracking-widest text-salvia mb-2">Tu kit</p>
         <p id="kit-resumen" class="text-arena/90 leading-relaxed">Elegí un producto de cada categoría para armar tu kit.</p>
@@ -425,6 +377,29 @@
         </a>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ CATALOG ============ -->
+<section id="catalogo" class="bg-crema">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+      <div>
+        <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-2">Catálogo</h2>
+        <p class="text-tinta/70 leading-relaxed">Tocá un producto para pedirlo directo por WhatsApp.</p>
+      </div>
+    </div>
+
+    <!-- Filter tabs -->
+    <div id="filtros" class="flex flex-wrap gap-2 mb-10">
+      <button data-filter="todos" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Todos</button>
+      <button data-filter="mate" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Mates</button>
+      <button data-filter="yerba" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Yerbas</button>
+      <button data-filter="bombilla" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Bombillas</button>
+      <button data-filter="combo" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Combos</button>
+    </div>
+
+    <div id="grid-catalogo" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
   </div>
 </section>
 
@@ -447,11 +422,12 @@
       </p>
     </div>
     <div class="order-1 md:order-2">
-      <div class="aspect-square rounded-full bg-yerba/10 border-2 border-dashed border-yerba/30 flex items-center justify-center mx-auto max-w-xs">
-        <div class="w-2/3 aspect-square rounded-full bg-yerba text-crema flex flex-col items-center justify-center gap-2 shadow-lg">
-          <svg class="w-16 h-16"><use href="#icon-camera"/></svg>
-          <span class="text-xs text-arena/70 px-4 text-center">Foto del local / del equipo acá</span>
-        </div>
+      <div class="relative aspect-square rounded-full bg-yerba/10 ring-1 ring-yerba/15 flex items-center justify-center mx-auto max-w-xs">
+        <img src="images/mendoza.svg" alt="Provincia de Mendoza, Argentina"
+             class="w-1/2 h-1/2 object-contain" loading="lazy">
+        <span class="absolute bottom-7 sm:bottom-9 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-yerba-dark whitespace-nowrap">
+          <svg class="w-3.5 h-3.5"><use href="#icon-pin"/></svg> Mendoza
+        </span>
       </div>
     </div>
   </div>
@@ -562,7 +538,7 @@
 
 <!-- ============ FOOTER ============ -->
 <footer class="bg-yerba-dark text-crema">
-  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 sm:py-16 grid sm:grid-cols-3 gap-8 sm:gap-10">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-9 sm:py-11 grid sm:grid-cols-3 gap-8">
     <div>
       <div class="flex items-center gap-3 mb-3">
         <span class="w-10 h-10 rounded-full bg-crema text-yerba flex items-center justify-center">
@@ -576,8 +552,8 @@
     <div>
       <p class="font-semibold mb-3 text-sm uppercase tracking-widest text-salvia">Navegación</p>
       <nav class="flex flex-col gap-2 text-sm text-arena/80">
-        <a href="#catalogo" class="hover:text-crema transition-colors w-fit">Catálogo</a>
         <a href="#armar-kit" class="hover:text-crema transition-colors w-fit">Armá tu kit</a>
+        <a href="#catalogo" class="hover:text-crema transition-colors w-fit">Catálogo</a>
         <a href="#nosotros" class="hover:text-crema transition-colors w-fit">Nosotros</a>
         <a href="#envios" class="hover:text-crema transition-colors w-fit">Envíos</a>
         <a href="#preguntas" class="hover:text-crema transition-colors w-fit">Preguntas</a>
@@ -597,7 +573,7 @@
       </div>
     </div>
   </div>
-  <div class="border-t border-crema/10 py-4 text-center text-xs text-arena/60">
+  <div class="border-t border-crema/10 py-3 text-center text-xs text-arena/60">
     © <span id="anio"></span> JMates · Mates y momentos
   </div>
 </footer>
