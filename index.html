@@ -126,22 +126,7 @@
     .faq-chevron { transition: none !important; }
   }
 
-  /* ---- Hero "ronda": orbiting badges ---- */
-  .sat {
-    position: absolute;
-    transform: translate(-50%, -50%);
-  }
-  .orbita { transform-origin: 50% 50%; }
-  @media (prefers-reduced-motion: no-preference) {
-    .orbita    { animation: orbit-spin 48s linear infinite; }
-    .badge-rot { animation: orbit-counter 48s linear infinite; }
-  }
-  @keyframes orbit-spin    { to { transform: rotate(360deg); } }
-  @keyframes orbit-counter { to { transform: rotate(-360deg); } }
-  .orbita:hover { animation-play-state: paused; }
-  .orbita:hover .badge-rot { animation-play-state: paused; }
-
-  /* ---- Hero "ronda": rising steam ---- */
+  /* ---- Hero: rising steam ---- */
   .steam-wisp { opacity: 0; }
   @media (prefers-reduced-motion: no-preference) {
     .steam-wisp { animation: steam-rise 3.6s ease-in-out infinite; }
@@ -322,44 +307,25 @@
       </div>
     </div>
 
-    <!-- "La ronda" visual -->
-    <div class="relative w-full max-w-[15rem] sm:max-w-sm mx-auto aspect-square">
-      <div class="absolute inset-0 rounded-full orbit-ring"></div>
-      <div class="absolute inset-[12%] rounded-full bg-yerba-light/40 flex items-center justify-center">
-        <div class="relative w-2/3 aspect-square rounded-full bg-crema text-yerba flex items-center justify-center shadow-xl">
-          <!-- rising steam -->
-          <div class="steam absolute left-1/2 -translate-x-1/2 top-[14%] flex items-end gap-1.5 text-yerba/35 pointer-events-none" aria-hidden="true">
-            <svg class="steam-wisp steam-1 w-2.5 h-8"><use href="#icon-steam"/></svg>
-            <svg class="steam-wisp steam-2 w-2.5 h-9"><use href="#icon-steam"/></svg>
-            <svg class="steam-wisp steam-3 w-2.5 h-8"><use href="#icon-steam"/></svg>
-          </div>
-          <svg class="w-20 h-20 relative"><use href="#icon-mate"/></svg>
-        </div>
+    <!-- Foto del hero: mate cebado, en círculo (motivo de marca) -->
+    <div class="relative w-full max-w-[16rem] sm:max-w-sm mx-auto aspect-square">
+      <!-- anillo punteado desfasado como marco decorativo -->
+      <div class="absolute -inset-3 sm:-inset-4 rounded-full orbit-ring"></div>
+      <!-- vapor subiendo desde la foto -->
+      <div class="steam absolute left-1/2 -translate-x-1/2 -top-3 z-10 flex items-end gap-1.5 text-crema/60 pointer-events-none" aria-hidden="true">
+        <svg class="steam-wisp steam-1 w-2.5 h-9"><use href="#icon-steam"/></svg>
+        <svg class="steam-wisp steam-2 w-2.5 h-10"><use href="#icon-steam"/></svg>
+        <svg class="steam-wisp steam-3 w-2.5 h-9"><use href="#icon-steam"/></svg>
       </div>
-      <!-- orbiting badges -->
-      <div class="orbita absolute inset-0" aria-hidden="true">
-        <div class="sat" style="left:50%;top:0%">
-          <div class="badge-rot">
-            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-cobre text-crema flex items-center justify-center shadow-lg">
-              <svg class="w-5 h-5 sm:w-7 sm:h-7"><use href="#icon-leaf"/></svg>
-            </div>
-          </div>
-        </div>
-        <div class="sat" style="left:93.3%;top:75%">
-          <div class="badge-rot">
-            <div class="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-salvia text-yerba-dark flex items-center justify-center shadow-lg">
-              <svg class="w-5 h-5 sm:w-6 sm:h-6"><use href="#icon-bombilla"/></svg>
-            </div>
-          </div>
-        </div>
-        <div class="sat" style="left:6.7%;top:75%">
-          <div class="badge-rot">
-            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-arena text-yerba flex items-center justify-center shadow-lg">
-              <svg class="w-5 h-5 sm:w-7 sm:h-7"><use href="#icon-combo"/></svg>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- foto en círculo (LCP: sin lazy, alta prioridad) -->
+      <img src="images/hero-mate.jpg" alt="Mate cebado listo para la ronda"
+           fetchpriority="high" decoding="async"
+           class="relative w-full h-full rounded-full object-cover shadow-xl ring-1 ring-crema/15">
+      <!-- etiqueta de marca flotante -->
+      <p class="precio-tag absolute -bottom-3 left-2 sm:left-0 bg-cobre text-crema font-mono text-xs sm:text-sm font-semibold px-3 py-1.5 rounded shadow-lg">
+        <svg class="w-4 h-4"><use href="#icon-truck"/></svg>
+        Envíos a todo el país
+      </p>
     </div>
   </div>
 </section>

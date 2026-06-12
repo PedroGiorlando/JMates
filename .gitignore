@@ -6,3 +6,5 @@ desktop.ini
 
 # image-slot persistence sidecar (runtime-generated)
 .image-slots.state.json
+
+.vercel
