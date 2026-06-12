@@ -331,11 +331,11 @@
 </section>
 
 <!-- ============ ARMÁ TU KIT ============ -->
-<section id="armar-kit" class="bg-yerba-dark text-crema">
+<section id="armar-kit" class="bg-crema">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
     <div class="max-w-2xl mb-12">
       <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-3">Armá tu kit</h2>
-      <p class="text-arena/90 leading-relaxed">
+      <p class="text-tinta/70 leading-relaxed">
         Elegí tu mate, tu bombilla y tu yerba. Te armamos el pedido completo y te lo
         mandamos listo a WhatsApp para confirmar.
       </p>
@@ -363,7 +363,7 @@
     </div>
 
     <!-- Summary -->
-    <div class="bg-yerba rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+    <div class="bg-yerba text-crema rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
       <div>
         <p class="text-sm uppercase tracking-widest text-salvia mb-2">Tu kit</p>
         <p id="kit-resumen" class="text-arena/90 leading-relaxed">Elegí un producto de cada categoría para armar tu kit.</p>
@@ -381,22 +381,22 @@
 </section>
 
 <!-- ============ CATALOG ============ -->
-<section id="catalogo" class="bg-crema">
+<section id="catalogo" class="bg-yerba-dark text-crema">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
       <div>
         <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-2">Catálogo</h2>
-        <p class="text-tinta/70 leading-relaxed">Tocá un producto para pedirlo directo por WhatsApp.</p>
+        <p class="text-arena/90 leading-relaxed">Tocá un producto para pedirlo directo por WhatsApp.</p>
       </div>
     </div>
 
     <!-- Filter tabs -->
     <div id="filtros" class="flex flex-wrap gap-2 mb-10">
-      <button data-filter="todos" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Todos</button>
-      <button data-filter="mate" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Mates</button>
-      <button data-filter="yerba" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Yerbas</button>
-      <button data-filter="bombilla" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Bombillas</button>
-      <button data-filter="combo" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-yerba/20 transition-colors">Combos</button>
+      <button data-filter="todos" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">Todos</button>
+      <button data-filter="mate" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">Mates</button>
+      <button data-filter="yerba" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">Yerbas</button>
+      <button data-filter="bombilla" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">Bombillas</button>
+      <button data-filter="combo" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">Combos</button>
     </div>
 
     <div id="grid-catalogo" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -769,13 +769,13 @@
 
   function kitOption(product) {
     const div = document.createElement('div');
-    div.className = 'kit-opcion cursor-pointer border-2 border-yerba-light/40 rounded-xl p-4 flex items-center justify-between gap-3';
+    div.className = 'kit-opcion cursor-pointer border-2 border-yerba/20 rounded-xl p-4 flex items-center justify-between gap-3';
     div.setAttribute('role', 'button');
     div.setAttribute('tabindex', '0');
     div.innerHTML = `
       <div>
         <p class="font-semibold">${product.name}</p>
-        <p class="text-sm text-arena/80">${product.desc}</p>
+        <p class="text-sm text-tinta/60">${product.desc}</p>
       </div>
       <p class="font-mono text-sm font-semibold whitespace-nowrap">${formatPrice(product.price)}</p>
     `;
