@@ -146,6 +146,16 @@
 
   /* Product photo slots: tint the empty-state on-brand */
   .producto-foto image-slot { color: #3C5A40; }
+  /* Mapa de Mendoza: leve inclinación para dar sensación 3D */
+  .mendoza-3d {
+    transform: perspective(820px) rotateX(32deg) rotateZ(-7deg);
+    transform-origin: 50% 55%;
+    filter: drop-shadow(0 26px 18px rgba(33, 78, 41, 0.38));
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mendoza-3d { transition: transform .45s ease, filter .45s ease; }
+    .mendoza-3d:hover { transform: perspective(820px) rotateX(18deg) rotateZ(-4deg); }
+  }
 </style>
 </head>
 
@@ -422,13 +432,8 @@
       </p>
     </div>
     <div class="order-1 md:order-2">
-      <div class="relative aspect-square rounded-full bg-yerba/10 ring-1 ring-yerba/15 flex items-center justify-center mx-auto max-w-xs">
-        <img src="images/mendoza.svg" alt="Provincia de Mendoza, Argentina"
-             class="w-1/2 h-1/2 object-contain" loading="lazy">
-        <span class="absolute bottom-7 sm:bottom-9 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-yerba-dark whitespace-nowrap">
-          <svg class="w-3.5 h-3.5"><use href="#icon-pin"/></svg> Mendoza
-        </span>
-      </div>
+      <img src="images/mendoza.svg" alt="Provincia de Mendoza, Argentina"
+           class="mendoza-3d w-full max-w-[22rem] mx-auto block" loading="lazy">
     </div>
   </div>
 </section>
