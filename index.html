@@ -679,7 +679,7 @@
       </div>
       <div class="flex-1">
         <p class="text-xs uppercase tracking-widest text-cobre-dark font-semibold mb-1">${CATEGORY_LABELS[product.category]}</p>
-        <h3 class="font-display font-semibold text-lg leading-snug mb-1">${product.name}</h3>
+        <h3 class="font-display font-semibold text-lg leading-snug mb-1 text-tinta">${product.name}</h3>
         <p class="text-sm leading-relaxed text-tinta/75">${product.desc}</p>
       </div>
       <div class="flex items-center justify-between gap-3">
@@ -769,7 +769,7 @@
 
   function kitOption(product) {
     const div = document.createElement('div');
-    div.className = 'kit-opcion cursor-pointer border-2 border-yerba/20 rounded-xl p-4 flex items-center justify-between gap-3';
+    div.className = 'kit-opcion cursor-pointer bg-arena border-2 border-yerba/20 rounded-xl p-4 flex items-center justify-between gap-3';
     div.setAttribute('role', 'button');
     div.setAttribute('tabindex', '0');
     div.innerHTML = `
