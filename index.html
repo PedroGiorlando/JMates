@@ -157,12 +157,25 @@
     .mendoza-3d:hover { transform: perspective(820px) rotateX(18deg) rotateZ(-4deg); }
   }
 
+  /* Allover pattern: hero (mismo motivo, opacidad menor) */
+  section.bg-yerba {
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg transform='translate(60,60) rotate(-25) translate(-12,-12) scale(2)' fill='none' stroke='rgba(242,234,217,0.07)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='3' x2='12' y2='19'/%3E%3Cellipse cx='12' cy='21' rx='3.5' ry='2'/%3E%3Cline x1='9.5' y1='19.5' x2='14.5' y2='19.5' stroke-width='1'/%3E%3Ccircle cx='12' cy='2.2' r='1.5' fill='rgba(242,234,217,0.07)' stroke='none'/%3E%3C/g%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg transform='translate(60,60) rotate(-10) translate(-12,-12) scale(2)' fill='none' stroke='rgba(242,234,217,0.07)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 13 C7 20.5 17 20.5 17 13 C17 9 15 7 12 7 C9 7 7 9 7 13 Z'/%3E%3Cline x1='10' y1='7' x2='10' y2='5'/%3E%3Cline x1='14' y1='7' x2='14' y2='5'/%3E%3Cline x1='9' y1='5' x2='15' y2='5'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 120px 120px, 120px 120px;
+    background-position: 0 0, 60px 60px;
+  }
+
   /* ===================== Catálogo: estética mercado / editorial ===================== */
   #catalogo {
     position: relative;
     background-color: #214E29;
-    background-image: radial-gradient(circle at 1px 1px, rgba(242,234,217,0.06) 1px, transparent 0);
-    background-size: 22px 22px;
+    /* Allover half-drop: bombilla (tile A) + calabaza (tile B) */
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg transform='translate(60,60) rotate(-25) translate(-12,-12) scale(2)' fill='none' stroke='rgba(242,234,217,0.10)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='3' x2='12' y2='19'/%3E%3Cellipse cx='12' cy='21' rx='3.5' ry='2'/%3E%3Cline x1='9.5' y1='19.5' x2='14.5' y2='19.5' stroke-width='1'/%3E%3Ccircle cx='12' cy='2.2' r='1.5' fill='rgba(242,234,217,0.10)' stroke='none'/%3E%3C/g%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg transform='translate(60,60) rotate(-10) translate(-12,-12) scale(2)' fill='none' stroke='rgba(242,234,217,0.10)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 13 C7 20.5 17 20.5 17 13 C17 9 15 7 12 7 C9 7 7 9 7 13 Z'/%3E%3Cline x1='10' y1='7' x2='10' y2='5'/%3E%3Cline x1='14' y1='7' x2='14' y2='5'/%3E%3Cline x1='9' y1='5' x2='15' y2='5'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 120px 120px, 120px 120px;
+    background-position: 0 0, 60px 60px;
   }
   #catalogo::before {
     content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -244,6 +257,30 @@
   .prod-buy:hover { background: #214E29; box-shadow: 0 12px 22px -12px rgba(33,78,41,0.85); }
   .prod-arrow { transform: rotate(-90deg); }
 
+  /* Category accent stripe at card top */
+  .prod-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 1.2rem; right: 1.2rem;
+    height: 3px;
+    border-radius: 0 0 4px 4px;
+    background: var(--cat-accent, #BE7240);
+    opacity: 0.55;
+    transition: opacity .4s ease, width .4s ease;
+  }
+  .prod-card:hover::after { opacity: 1; }
+
+  /* Card entrance animation */
+  @media (prefers-reduced-motion: no-preference) {
+    .prod-card {
+      animation: card-in .45s cubic-bezier(.2,.7,.2,1) both;
+    }
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  }
+
   /* Movimiento solo si el visitante lo acepta */
   @media (prefers-reduced-motion: no-preference) {
     .prod-card:hover { transform: translateY(-7px); }
@@ -253,6 +290,31 @@
     .prod-card:hover .prod-price { transform: translateX(-50%) translateY(-3px) rotate(0deg); }
     .prod-arrow { transition: transform .25s ease; }
     .prod-buy:hover .prod-arrow { transform: rotate(-90deg) translateY(3px); }
+  }
+
+  /* Filter count badge */
+  .filtro-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .68rem;
+    font-weight: 700;
+    opacity: 0.55;
+    transition: opacity .18s ease;
+    letter-spacing: 0;
+  }
+  .filtro-activo .filtro-count { opacity: 0.8; }
+
+  /* Catalog header editorial line */
+  .catalogo-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+  }
+  .catalogo-eyebrow::after {
+    content: '';
+    flex: 1;
+    max-width: 3rem;
+    height: 1px;
+    background: rgba(183,196,168,0.45);
   }
 </style>
 </head>
@@ -492,23 +554,49 @@
 <section id="catalogo" class="bg-yerba-dark text-crema">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
     <div class="mb-9 sm:mb-11">
-      <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-salvia mb-3">
-        <svg class="w-4 h-4"><use href="#icon-leaf"/></svg>
-        Nuestra selección
-      </p>
+      <div class="catalogo-eyebrow mb-4">
+        <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-salvia">
+          <svg class="w-4 h-4"><use href="#icon-leaf"/></svg>
+          Nuestra selección
+        </p>
+        <span class="font-mono text-[.65rem] font-bold text-salvia/40 tracking-widest hidden sm:inline">— <span id="total-productos"></span></span>
+      </div>
       <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-        <h2 class="font-display font-semibold text-4xl sm:text-5xl tracking-tight">Catálogo</h2>
+        <h2 class="font-display font-semibold text-4xl sm:text-5xl tracking-tight leading-none">
+          Catálogo
+          <span class="block sm:inline text-salvia/30 font-mono text-lg sm:text-2xl font-semibold tracking-widest align-baseline sm:ml-3" aria-hidden="true">✦</span>
+        </h2>
         <p class="text-arena/85 leading-relaxed max-w-sm sm:text-right">Elegí tu próximo mate, yerba o bombilla — tocá un producto y lo pedís directo por WhatsApp.</p>
       </div>
     </div>
 
     <!-- Filter tabs -->
     <div id="filtros" class="flex flex-wrap gap-2 mb-10">
-      <button data-filter="todos" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">Todos</button>
-      <button data-filter="mate" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">Mates</button>
-      <button data-filter="yerba" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">Yerbas</button>
-      <button data-filter="bombilla" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">Bombillas</button>
-      <button data-filter="combo" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">Combos</button>
+      <button data-filter="todos" class="filtro-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">
+        <span class="w-3 h-3 rounded-full bg-crema/30 flex-shrink-0"></span>
+        Todos
+        <span class="filtro-count"></span>
+      </button>
+      <button data-filter="mate" class="filtro-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">
+        <svg class="w-3.5 h-3.5 flex-shrink-0"><use href="#icon-mate"/></svg>
+        Mates
+        <span class="filtro-count"></span>
+      </button>
+      <button data-filter="yerba" class="filtro-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">
+        <svg class="w-3.5 h-3.5 flex-shrink-0"><use href="#icon-leaf"/></svg>
+        Yerbas
+        <span class="filtro-count"></span>
+      </button>
+      <button data-filter="bombilla" class="filtro-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">
+        <svg class="w-3.5 h-3.5 flex-shrink-0"><use href="#icon-bombilla"/></svg>
+        Bombillas
+        <span class="filtro-count"></span>
+      </button>
+      <button data-filter="combo" class="filtro-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">
+        <svg class="w-3.5 h-3.5 flex-shrink-0"><use href="#icon-combo"/></svg>
+        Combos
+        <span class="filtro-count"></span>
+      </button>
     </div>
 
     <div id="grid-catalogo" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8"></div>
@@ -739,6 +827,13 @@
     combo: 'icon-combo',
   };
 
+  const CATEGORY_ACCENT = {
+    mate:     '#4F9A48',
+    bombilla: '#BE7240',
+    yerba:    '#7aad5a',
+    combo:    '#A35F31',
+  };
+
   const CATEGORY_LABELS = {
     mate: 'Mate',
     bombilla: 'Bombilla',
@@ -779,6 +874,8 @@
   function productCard(product, index) {
     const card = document.createElement('article');
     card.className = 'prod-card';
+    card.style.setProperty('--cat-accent', CATEGORY_ACCENT[product.category] || '#BE7240');
+    card.style.animationDelay = `${index * 55}ms`;
     const num = String(index + 1).padStart(2, '0');
     card.innerHTML = `
       <span class="prod-index">${num}</span>
@@ -825,6 +922,19 @@
 
   // Filter tabs
   const filtroBtns = document.querySelectorAll('.filtro-btn');
+
+  // Populate filter counts
+  filtroBtns.forEach(btn => {
+    const filter = btn.dataset.filter;
+    const count = filter === 'todos' ? PRODUCTS.length : PRODUCTS.filter(p => p.category === filter).length;
+    const badge = btn.querySelector('.filtro-count');
+    if (badge) badge.textContent = count;
+  });
+
+  // Total counter in section header
+  const totalEl = document.getElementById('total-productos');
+  if (totalEl) totalEl.textContent = `${PRODUCTS.length} productos`;
+
   filtroBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       filtroBtns.forEach(b => b.classList.remove('filtro-activo'));
