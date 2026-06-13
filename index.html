@@ -156,6 +156,104 @@
     .mendoza-3d { transition: transform .45s ease, filter .45s ease; }
     .mendoza-3d:hover { transform: perspective(820px) rotateX(18deg) rotateZ(-4deg); }
   }
+
+  /* ===================== Catálogo: estética mercado / editorial ===================== */
+  #catalogo {
+    position: relative;
+    background-color: #214E29;
+    background-image: radial-gradient(circle at 1px 1px, rgba(242,234,217,0.06) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+  #catalogo::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(110% 55% at 50% -8%, rgba(79,154,72,0.30), transparent 60%);
+  }
+  #catalogo > div { position: relative; z-index: 1; }
+
+  /* Filtros como chips sobre verde */
+  #filtros .filtro-btn {
+    background: rgba(242,234,217,0.05);
+    border-color: rgba(242,234,217,0.22);
+    color: #F2EAD9;
+  }
+  #filtros .filtro-btn:not(.filtro-activo):hover {
+    border-color: rgba(242,234,217,0.5);
+    background: rgba(242,234,217,0.12);
+  }
+  #filtros .filtro-activo {
+    background: #BE7240 !important;
+    color: #FFFBF2 !important;
+    border-color: #BE7240 !important;
+    box-shadow: 0 8px 18px -10px rgba(190,114,64,0.9);
+  }
+
+  /* Card de producto */
+  .prod-card {
+    position: relative;
+    display: flex; flex-direction: column;
+    background: #FFFBF2;
+    border-radius: 1.5rem;
+    padding: 2.4rem 1.4rem 1.4rem;
+    border: 1px solid rgba(38,41,31,0.06);
+    box-shadow: 0 14px 30px -22px rgba(0,0,0,0.7);
+    transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease, border-color .4s ease;
+  }
+  .prod-card:hover {
+    border-color: rgba(190,114,64,0.45);
+    box-shadow: 0 30px 52px -26px rgba(0,0,0,0.65);
+  }
+
+  .prod-index {
+    position: absolute; top: 1rem; left: 1.2rem;
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: .72rem; letter-spacing: .12em; color: rgba(38,41,31,0.28);
+  }
+
+  .prod-photo { position: relative; display: flex; justify-content: center; margin-bottom: 1.7rem; }
+  .prod-photo-ring {
+    width: 8.75rem; height: 8.75rem; border-radius: 9999px; padding: 6px;
+    background: #F2EAD9; overflow: hidden;
+    box-shadow: 0 0 0 2px #BE7240, 0 18px 26px -16px rgba(33,78,41,0.55);
+    transition: box-shadow .4s ease;
+  }
+  .prod-card:hover .prod-photo-ring { box-shadow: 0 0 0 3px #BE7240, 0 22px 32px -16px rgba(33,78,41,0.7); }
+  .prod-img { width: 100%; height: 100%; object-fit: cover; border-radius: 9999px; display: block; }
+
+  .prod-price {
+    position: absolute; bottom: -0.55rem; left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: #BE7240; color: #FFFBF2;
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: .82rem;
+    padding: .32rem .72rem; border-radius: .45rem; white-space: nowrap;
+    box-shadow: 0 10px 18px -9px rgba(33,78,41,0.7);
+  }
+  .prod-price::before { content: ""; width: .42rem; height: .42rem; border-radius: 9999px; background: #FFFBF2; opacity: .85; }
+
+  .prod-cat { text-align: center; font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .18em; color: #A35F31; margin-bottom: .4rem; }
+  .prod-name { text-align: center; font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.18rem; line-height: 1.2; color: #26291F; margin-bottom: .45rem; }
+  .prod-desc { text-align: center; font-size: .83rem; line-height: 1.55; color: rgba(38,41,31,0.62); margin-bottom: 1.3rem; text-wrap: pretty; }
+
+  .prod-buy {
+    margin-top: auto;
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    background: #2F6A39; color: #FFFBF2; font-weight: 600; font-size: .9rem;
+    padding: .7rem 1.1rem; border-radius: 9999px;
+    transition: background .25s ease, box-shadow .25s ease;
+  }
+  .prod-buy:hover { background: #214E29; box-shadow: 0 12px 22px -12px rgba(33,78,41,0.85); }
+  .prod-arrow { transform: rotate(-90deg); }
+
+  /* Movimiento solo si el visitante lo acepta */
+  @media (prefers-reduced-motion: no-preference) {
+    .prod-card:hover { transform: translateY(-7px); }
+    .prod-img { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+    .prod-card:hover .prod-img { transform: scale(1.09); }
+    .prod-price { transition: transform .4s cubic-bezier(.2,.7,.2,1); }
+    .prod-card:hover .prod-price { transform: translateX(-50%) translateY(-3px) rotate(0deg); }
+    .prod-arrow { transition: transform .25s ease; }
+    .prod-buy:hover .prod-arrow { transform: rotate(-90deg) translateY(3px); }
+  }
 </style>
 </head>
 
@@ -393,10 +491,14 @@
 <!-- ============ CATALOG ============ -->
 <section id="catalogo" class="bg-yerba-dark text-crema">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
-    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
-      <div>
-        <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-2">Catálogo</h2>
-        <p class="text-arena/90 leading-relaxed">Tocá un producto para pedirlo directo por WhatsApp.</p>
+    <div class="mb-9 sm:mb-11">
+      <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-salvia mb-3">
+        <svg class="w-4 h-4"><use href="#icon-leaf"/></svg>
+        Nuestra selección
+      </p>
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+        <h2 class="font-display font-semibold text-4xl sm:text-5xl tracking-tight">Catálogo</h2>
+        <p class="text-arena/85 leading-relaxed max-w-sm sm:text-right">Elegí tu próximo mate, yerba o bombilla — tocá un producto y lo pedís directo por WhatsApp.</p>
       </div>
     </div>
 
@@ -409,7 +511,7 @@
       <button data-filter="combo" class="filtro-btn px-4 py-2 rounded-full text-sm font-semibold border border-crema/30 transition-colors">Combos</button>
     </div>
 
-    <div id="grid-catalogo" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <div id="grid-catalogo" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8"></div>
   </div>
 </section>
 
@@ -674,26 +776,27 @@
 
   const grid = document.getElementById('grid-catalogo');
 
-  function productCard(product) {
-    const card = document.createElement('div');
-    card.className = 'card-lift bg-arena rounded-2xl p-5 flex flex-col gap-4';
+  function productCard(product, index) {
+    const card = document.createElement('article');
+    card.className = 'prod-card';
+    const num = String(index + 1).padStart(2, '0');
     card.innerHTML = `
-      <div class="producto-foto aspect-square rounded-full overflow-hidden bg-yerba/5">
-        <img class="producto-img w-full h-full object-cover" loading="lazy" decoding="async"
-          src="${product.image || ''}" alt="Foto de ${product.name}">
+      <span class="prod-index">${num}</span>
+      <div class="prod-photo">
+        <div class="prod-photo-ring">
+          <img class="producto-img prod-img" loading="lazy" decoding="async"
+            src="${product.image || ''}" alt="Foto de ${product.name}">
+        </div>
+        <span class="prod-price">${formatPrice(product.price)}</span>
       </div>
-      <div class="flex-1">
-        <p class="text-xs uppercase tracking-widest text-cobre-dark font-semibold mb-1">${CATEGORY_LABELS[product.category]}</p>
-        <h3 class="font-display font-semibold text-lg leading-snug mb-1 text-tinta">${product.name}</h3>
-        <p class="text-sm leading-relaxed text-tinta/75">${product.desc}</p>
-      </div>
-      <div class="flex items-center justify-between gap-3">
-        <p class="precio-tag bg-cobre text-crema font-mono text-sm font-semibold px-3 py-1.5 rounded">${formatPrice(product.price)}</p>
-        <a href="#" class="btn-pedir-producto btn-press inline-flex items-center gap-2 bg-yerba text-crema text-sm font-semibold px-4 py-2 rounded-full hover:bg-yerba-light transition-colors" target="_blank" rel="noopener">
-          <svg class="w-4 h-4"><use href="#icon-chat"/></svg>
-          Pedir
-        </a>
-      </div>
+      <p class="prod-cat">${CATEGORY_LABELS[product.category]}</p>
+      <h3 class="prod-name">${product.name}</h3>
+      <p class="prod-desc">${product.desc}</p>
+      <a href="#" class="btn-pedir-producto prod-buy" target="_blank" rel="noopener">
+        <svg class="w-4 h-4"><use href="#icon-chat"/></svg>
+        Pedir
+        <svg class="prod-arrow w-4 h-4"><use href="#icon-chevron"/></svg>
+      </a>
     `;
     // Foto del producto (en images/, relacionada con su nombre). Si el archivo
     // faltara, caemos a un <image-slot> arrastrable para no mostrar imagen rota.
@@ -717,7 +820,7 @@
   function renderCatalog(filter) {
     grid.innerHTML = '';
     const items = filter === 'todos' ? PRODUCTS : PRODUCTS.filter(p => p.category === filter);
-    items.forEach(p => grid.appendChild(productCard(p)));
+    items.forEach((p, i) => grid.appendChild(productCard(p, i)));
   }
 
   // Filter tabs
