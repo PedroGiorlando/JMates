@@ -8,3 +8,9 @@ desktop.ini
 .image-slots.state.json
 
 .vercel
+
+# Node / secrets
+node_modules
+.env
+.env.local
+.env*.local

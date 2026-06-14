@@ -315,10 +315,52 @@
     height: 1px;
     background: rgba(183,196,168,0.45);
   }
+
+  /* ===================== Checkout / pagos ===================== */
+  /* Botón "Pagar" en las cards de producto */
+  .prod-pay {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    width: 100%; margin-bottom: .55rem;
+    background: #BE7240; color: #FFFBF2; font-weight: 600;
+    padding: .72rem 1rem; border-radius: 9999px; cursor: pointer;
+    border: none; font-size: .95rem;
+    transition: background .2s ease, transform .2s ease;
+  }
+  .prod-pay:hover { background: #A35F31; }
+  @media (prefers-reduced-motion: no-preference) {
+    .prod-pay:hover { transform: translateY(-2px); }
+    .prod-pay:active { transform: translateY(0); }
+  }
+
+  /* Modal de checkout */
+  #checkout-modal { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+  #checkout-modal.hidden { display: none; }
+  #checkout-modal .co-backdrop { position: absolute; inset: 0; background: rgba(38,41,31,0.55); }
+  @supports (backdrop-filter: blur(2px)) { #checkout-modal .co-backdrop { backdrop-filter: blur(2px); } }
+  #checkout-modal .co-panel {
+    position: relative; width: 100%; max-width: 30rem;
+    background: #FFFBF2; border-radius: 1.5rem; padding: 1.6rem;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.5);
+    max-height: 90vh; overflow: auto;
+  }
+  .co-zona {
+    display: flex; align-items: center; justify-content: space-between; gap: .6rem;
+    padding: .7rem .9rem; border: 1.5px solid rgba(38,41,31,0.12);
+    border-radius: .8rem; cursor: pointer; margin-bottom: .5rem;
+    transition: border-color .15s ease, background-color .15s ease;
+  }
+  .co-zona:hover { border-color: rgba(190,114,64,0.5); }
+  .co-zona.sel { border-color: #BE7240; background: rgba(190,114,64,0.07); }
+
+  /* Banner de resultado de pago */
+  #pago-banner.hidden { display: none; }
 </style>
 </head>
 
 <body class="font-sans bg-arena text-tinta antialiased">
+
+<!-- Banner de resultado de pago (se completa por JS según ?pago=) -->
+<div id="pago-banner" class="hidden"></div>
 
 <!-- ============ ICON SPRITE (hidden) ============ -->
 <svg class="hidden">
@@ -397,6 +439,11 @@
   <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M18 6 6 18"/>
     <path d="m6 6 12 12"/>
+  </symbol>
+
+  <symbol id="icon-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect width="20" height="14" x="2" y="5" rx="2"/>
+    <line x1="2" x2="22" y1="10" y2="10"/>
   </symbol>
 </svg>
 
@@ -541,10 +588,15 @@
       </div>
       <div class="flex flex-col items-start sm:items-end gap-3 flex-shrink-0">
         <p id="kit-total" class="font-display font-semibold text-3xl"></p>
-        <a href="#" id="btn-pedir-kit" target="_blank" rel="noopener"
+        <button type="button" id="btn-pagar-kit"
            class="btn-press pointer-events-none opacity-40 inline-flex items-center gap-2 bg-cobre hover:bg-cobre-dark text-crema font-semibold px-6 py-3 rounded-full transition-opacity">
+          <svg class="w-4 h-4"><use href="#icon-card"/></svg>
+          Pagar el kit
+        </button>
+        <a href="#" id="btn-pedir-kit" target="_blank" rel="noopener"
+           class="pointer-events-none opacity-40 inline-flex items-center gap-2 text-crema/90 hover:text-crema text-sm font-medium transition-opacity">
           <svg class="w-4 h-4"><use href="#icon-chat"/></svg>
-          Pedir este kit por WhatsApp
+          o consultar por WhatsApp
         </a>
       </div>
     </div>
@@ -764,6 +816,37 @@
   </div>
 </footer>
 
+<!-- ============ CHECKOUT MODAL ============ -->
+<div id="checkout-modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+  <div class="co-backdrop" data-close></div>
+  <div class="co-panel">
+    <div class="flex items-center justify-between mb-4">
+      <h3 id="checkout-title" class="font-display font-semibold text-xl">Finalizar compra</h3>
+      <button type="button" data-close aria-label="Cerrar" class="text-tinta/50 hover:text-tinta text-2xl leading-none">&times;</button>
+    </div>
+
+    <div id="checkout-resumen" class="space-y-1 text-sm mb-4 border-b border-tinta/10 pb-4"></div>
+
+    <p class="text-sm font-semibold mb-2">Zona de envío</p>
+    <div id="checkout-zonas" class="mb-4"></div>
+
+    <input id="checkout-nombre" type="text" placeholder="Tu nombre (opcional)"
+           class="w-full border border-tinta/15 rounded-lg px-3 py-2 mb-4 text-sm focus:outline-none focus:border-cobre" />
+
+    <div id="checkout-total" class="text-sm text-tinta/80 mb-3 leading-relaxed"></div>
+    <p id="checkout-error" class="text-sm text-red-700 mb-2"></p>
+
+    <button type="button" id="checkout-go"
+            class="w-full inline-flex items-center justify-center gap-2 bg-cobre hover:bg-cobre-dark text-crema font-semibold py-3 rounded-full transition-colors">
+      <svg class="w-4 h-4"><use href="#icon-card"/></svg> Ir a pagar
+    </button>
+    <p class="text-xs text-tinta/55 text-center mt-3">
+      Pago seguro vía Mercado Pago. ¿Dudas?
+      <a href="#" id="checkout-wa" class="underline" target="_blank" rel="noopener">Escribinos</a>
+    </p>
+  </div>
+</div>
+
 <!-- Floating WhatsApp button -->
 <a href="#" id="btn-whatsapp-float" target="_blank" rel="noopener"
    class="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full bg-cobre text-crema flex items-center justify-center shadow-xl hover:bg-cobre-dark transition-colors">
@@ -880,9 +963,13 @@
       <p class="prod-cat">${CATEGORY_LABELS[product.category]}</p>
       <h3 class="prod-name">${product.name}</h3>
       <p class="prod-desc">${product.desc}</p>
+      <button type="button" class="btn-pagar-producto prod-pay" data-id="${product.id}">
+        <svg class="w-4 h-4"><use href="#icon-card"/></svg>
+        Pagar con Mercado Pago
+      </button>
       <a href="#" class="btn-pedir-producto prod-buy" target="_blank" rel="noopener">
         <svg class="w-4 h-4"><use href="#icon-chat"/></svg>
-        Pedir
+        Consultar
         <svg class="prod-arrow w-4 h-4"><use href="#icon-chevron"/></svg>
       </a>
     `;
@@ -1015,6 +1102,7 @@
     const resumenEl = document.getElementById('kit-resumen');
     const totalEl = document.getElementById('kit-total');
     const btnPedir = document.getElementById('btn-pedir-kit');
+    const btnPagar = document.getElementById('btn-pagar-kit');
 
     const seleccionados = ['mate', 'bombilla', 'yerba'].map(c => kitSelection[c]);
     const elegidos = seleccionados.filter(Boolean);
@@ -1023,6 +1111,7 @@
       resumenEl.textContent = 'Elegí un producto de cada categoría para armar tu kit.';
       totalEl.textContent = '';
       btnPedir.classList.add('pointer-events-none', 'opacity-40');
+      btnPagar.classList.add('pointer-events-none', 'opacity-40');
       return;
     }
 
@@ -1033,11 +1122,13 @@
 
     if (elegidos.length === 3) {
       btnPedir.classList.remove('pointer-events-none', 'opacity-40');
+      btnPagar.classList.remove('pointer-events-none', 'opacity-40');
       const lines = elegidos.map(p => `- ${p.name} (${formatPrice(p.price)})`).join('\n');
       const msg = `Hola! Quiero armar este kit:\n\n${lines}\n\nTotal: ${formatPrice(total)}\n\n¿Me confirman disponibilidad y costo de envío?`;
       setWhatsAppLink(btnPedir, msg);
     } else {
       btnPedir.classList.add('pointer-events-none', 'opacity-40');
+      btnPagar.classList.add('pointer-events-none', 'opacity-40');
     }
   }
 
@@ -1063,6 +1154,148 @@
      FOOTER YEAR
   ===================================================================== */
   document.getElementById('anio').textContent = new Date().getFullYear();
+
+  /* =====================================================================
+     CHECKOUT — Mercado Pago
+  ===================================================================== */
+
+  // Zonas de envío (display; el server recalcula los montos reales).
+  const SHIPPING_ZONES = [
+    { id: 'mendoza', label: 'Mendoza (retiro / envío local)', cost: 0 },
+    { id: 'cuyo',    label: 'Cuyo / Centro',                  cost: 4000 },
+    { id: 'caba',    label: 'CABA / GBA',                     cost: 5500 },
+    { id: 'resto',   label: 'Resto del país',                 cost: 0, aConfirmar: true },
+  ];
+  const PRODUCT_BY_ID = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+
+  let coLineas = [];
+  let coZona = 'mendoza';
+
+  const coModal   = document.getElementById('checkout-modal');
+  const coResumen = document.getElementById('checkout-resumen');
+  const coZonas   = document.getElementById('checkout-zonas');
+  const coTotal   = document.getElementById('checkout-total');
+  const coError   = document.getElementById('checkout-error');
+  const coGo      = document.getElementById('checkout-go');
+
+  function coSubtotal() {
+    return coLineas.reduce((s, l) => {
+      const p = PRODUCT_BY_ID[l.id];
+      return s + (p ? p.price : 0) * (l.qty || 1);
+    }, 0);
+  }
+
+  function coRenderTotal() {
+    const zona = SHIPPING_ZONES.find(z => z.id === coZona);
+    const envio = zona ? zona.cost : 0;
+    const sub = coSubtotal();
+    const total = sub + envio;
+    const envioTxt = zona && zona.aConfirmar ? 'a confirmar aparte' : (envio > 0 ? formatPrice(envio) : 'gratis');
+    coTotal.innerHTML =
+      'Productos: <b>' + formatPrice(sub) + '</b><br>' +
+      'Envío: <b>' + envioTxt + '</b><br>' +
+      '<span class="text-base text-tinta">Total: <b>' + formatPrice(total) + '</b></span>';
+  }
+
+  function coRenderZonas() {
+    coZonas.innerHTML = SHIPPING_ZONES.map(z =>
+      '<div class="co-zona' + (z.id === coZona ? ' sel' : '') + '" role="button" tabindex="0" data-zona="' + z.id + '">' +
+        '<span>' + z.label + '</span>' +
+        '<span class="font-mono text-sm">' + (z.aConfirmar ? 'a confirmar' : (z.cost > 0 ? formatPrice(z.cost) : 'gratis')) + '</span>' +
+      '</div>'
+    ).join('');
+    coZonas.querySelectorAll('.co-zona').forEach(el => {
+      const pick = () => { coZona = el.dataset.zona; coRenderZonas(); coRenderTotal(); };
+      el.addEventListener('click', pick);
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+    });
+  }
+
+  function openCheckout(lineas) {
+    if (!Array.isArray(lineas) || lineas.length === 0) return;
+    coLineas = lineas;
+    coZona = 'mendoza';
+    coError.textContent = '';
+    coGo.disabled = false;
+    coGo.innerHTML = '<svg class="w-4 h-4"><use href="#icon-card"/></svg> Ir a pagar';
+    coResumen.innerHTML = lineas.map(l => {
+      const p = PRODUCT_BY_ID[l.id];
+      return '<div class="flex justify-between gap-3">' +
+        '<span>' + (l.qty || 1) + '× ' + (p ? p.name : l.id) + '</span>' +
+        '<span class="font-mono">' + formatPrice((p ? p.price : 0) * (l.qty || 1)) + '</span>' +
+      '</div>';
+    }).join('');
+    coRenderZonas();
+    coRenderTotal();
+    coModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCheckout() {
+    coModal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+  coModal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeCheckout));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !coModal.classList.contains('hidden')) closeCheckout(); });
+
+  coGo.addEventListener('click', async () => {
+    coError.textContent = '';
+    coGo.disabled = true;
+    coGo.textContent = 'Redirigiendo…';
+    try {
+      const nombreEl = document.getElementById('checkout-nombre');
+      const nombre = nombreEl && nombreEl.value ? nombreEl.value.trim() : '';
+      const res = await fetch('/api/create-preference', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lineas: coLineas, zona: coZona, comprador: nombre ? { nombre } : null }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.init_point) throw new Error(data.error || 'No se pudo iniciar el pago');
+      window.location.href = data.init_point;
+    } catch (e) {
+      coError.textContent = 'Error: ' + (e.message || e) + '. Probá de nuevo o escribinos por WhatsApp.';
+      coGo.disabled = false;
+      coGo.innerHTML = '<svg class="w-4 h-4"><use href="#icon-card"/></svg> Ir a pagar';
+    }
+  });
+
+  // Botón "Pagar" de cada card (delegación: el grid se re-renderiza al filtrar)
+  const gridCat = document.getElementById('grid-catalogo');
+  if (gridCat) gridCat.addEventListener('click', e => {
+    const b = e.target.closest('.btn-pagar-producto');
+    if (b) openCheckout([{ id: b.dataset.id, qty: 1 }]);
+  });
+
+  // Botón "Pagar el kit"
+  const btnPagarKit = document.getElementById('btn-pagar-kit');
+  if (btnPagarKit) btnPagarKit.addEventListener('click', () => {
+    const elegidos = ['mate', 'bombilla', 'yerba'].map(c => kitSelection[c]).filter(Boolean);
+    if (elegidos.length === 3) openCheckout(elegidos.map(p => ({ id: p.id, qty: 1 })));
+  });
+
+  // Link "Escribinos" del modal
+  const coWa = document.getElementById('checkout-wa');
+  if (coWa) setWhatsAppLink(coWa, mensajeGeneral);
+
+  /* Banner de resultado de pago (?pago=success|pending|failure) */
+  (function () {
+    const estado = new URLSearchParams(location.search).get('pago');
+    if (!estado) return;
+    const MAP = {
+      success: { cls: 'bg-yerba text-crema',   msg: '¡Pago aprobado! 🧉 Te contactamos para coordinar el envío.' },
+      pending: { cls: 'bg-cobre text-crema',   msg: 'Pago pendiente. Te avisamos apenas se acredite.' },
+      failure: { cls: 'bg-red-700 text-crema', msg: 'El pago no se completó. Probá de nuevo o escribinos por WhatsApp.' },
+    };
+    const cfg = MAP[estado];
+    if (!cfg) return;
+    const bar = document.getElementById('pago-banner');
+    bar.className = 'fixed top-0 inset-x-0 z-[70] px-4 py-3 text-sm font-medium text-center shadow-md ' + cfg.cls;
+    bar.innerHTML = cfg.msg + ' <button type="button" id="pago-banner-x" class="ml-3 underline">cerrar</button>';
+    bar.classList.remove('hidden');
+    document.getElementById('pago-banner-x').addEventListener('click', () => bar.classList.add('hidden'));
+    history.replaceState(null, '', location.pathname);
+  })();
 </script>
 
 </body>

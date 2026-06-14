@@ -1,0 +1,12 @@
+{
+  "name": "jmates-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JMates landing + checkout Mercado Pago (Vercel serverless functions)",
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "mercadopago": "^2.0.0"
+  }
+}
