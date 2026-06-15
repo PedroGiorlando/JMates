@@ -1,0 +1,9 @@
+{
+  "intro": "Despachamos desde Mendoza por correo y empresas de encomienda. El costo final se calcula según tu código postal y te lo confirmamos por WhatsApp antes de cerrar el pedido.",
+  "zones": [
+    { "id": "mendoza", "label": "Mendoza (retiro / envío local)", "blurb": "Coordinamos punto de encuentro o envío local.", "cost": 0, "dias": "", "aConfirmar": false },
+    { "id": "cuyo", "label": "Cuyo / Centro", "blurb": "San Juan, San Luis, Córdoba, Sta. Fe.", "cost": 4000, "dias": "2-4 días", "aConfirmar": false },
+    { "id": "caba", "label": "CABA / GBA", "blurb": "Buenos Aires y alrededores.", "cost": 5500, "dias": "3-5 días", "aConfirmar": false },
+    { "id": "resto", "label": "Resto del país", "blurb": "Norte, Patagonia y demás provincias.", "cost": 0, "dias": "4-7 días", "aConfirmar": true }
+  ]
+}

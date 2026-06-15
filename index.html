@@ -552,8 +552,8 @@
 <section id="armar-kit" class="bg-crema">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20 md:py-28">
     <div class="max-w-2xl mb-12">
-      <h2 class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-3">Armá tu kit</h2>
-      <p class="text-tinta/70 leading-relaxed">
+      <h2 id="kit-title" class="font-display font-semibold text-3xl sm:text-4xl tracking-tight mb-3">Armá tu kit</h2>
+      <p id="kit-intro" class="text-tinta/70 leading-relaxed">
         Elegí tu mate, tu bombilla y tu yerba. Te armamos el pedido completo y te lo
         mandamos listo a WhatsApp para confirmar.
       </p>
@@ -562,19 +562,19 @@
     <div class="grid lg:grid-cols-3 gap-6 lg:gap-8 mb-8">
       <div>
         <h3 class="font-display font-semibold text-lg mb-4 flex items-center gap-2">
-          <svg class="w-5 h-5"><use href="#icon-mate"/></svg> 1. Elegí tu mate
+          <svg class="w-5 h-5"><use href="#icon-mate"/></svg> <span id="kit-paso-mate">1. Elegí tu mate</span>
         </h3>
         <div id="kit-mate" class="space-y-3"></div>
       </div>
       <div>
         <h3 class="font-display font-semibold text-lg mb-4 flex items-center gap-2">
-          <svg class="w-5 h-5"><use href="#icon-bombilla"/></svg> 2. Elegí tu bombilla
+          <svg class="w-5 h-5"><use href="#icon-bombilla"/></svg> <span id="kit-paso-bombilla">2. Elegí tu bombilla</span>
         </h3>
         <div id="kit-bombilla" class="space-y-3"></div>
       </div>
       <div>
         <h3 class="font-display font-semibold text-lg mb-4 flex items-center gap-2">
-          <svg class="w-5 h-5"><use href="#icon-leaf"/></svg> 3. Elegí tu yerba
+          <svg class="w-5 h-5"><use href="#icon-leaf"/></svg> <span id="kit-paso-yerba">3. Elegí tu yerba</span>
         </h3>
         <div id="kit-yerba" class="space-y-3"></div>
       </div>
@@ -689,34 +689,13 @@
         <svg class="w-8 h-8 text-cobre-dark shrink-0"><use href="#icon-truck"/></svg>
         Envíos a todo el país
       </h2>
-      <p class="text-tinta/70 leading-relaxed">
+      <p id="envios-intro" class="text-tinta/70 leading-relaxed">
         Despachamos desde Mendoza por correo y empresas de encomienda. El costo final
         se calcula según tu código postal y te lo confirmamos por WhatsApp antes de cerrar el pedido.
       </p>
     </div>
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="bg-arena rounded-2xl p-5">
-        <p class="font-display font-semibold text-lg mb-1">Mendoza (retiro)</p>
-        <p class="text-sm text-tinta/70 mb-3">Coordinamos punto de encuentro o envío local.</p>
-        <p class="precio-tag bg-yerba-dark text-crema font-mono text-sm font-semibold px-3 py-1.5 rounded">Sin cargo</p>
-      </div>
-      <div class="bg-arena rounded-2xl p-5">
-        <p class="font-display font-semibold text-lg mb-1">Cuyo / Centro</p>
-        <p class="text-sm text-tinta/70 mb-3">San Juan, San Luis, Córdoba, Sta. Fe.</p>
-        <p class="precio-tag bg-yerba-dark text-crema font-mono text-sm font-semibold px-3 py-1.5 rounded">Desde $4.000 · 2-4 días</p>
-      </div>
-      <div class="bg-arena rounded-2xl p-5">
-        <p class="font-display font-semibold text-lg mb-1">CABA / GBA</p>
-        <p class="text-sm text-tinta/70 mb-3">Buenos Aires y alrededores.</p>
-        <p class="precio-tag bg-yerba-dark text-crema font-mono text-sm font-semibold px-3 py-1.5 rounded">Desde $5.500 · 3-5 días</p>
-      </div>
-      <div class="bg-arena rounded-2xl p-5">
-        <p class="font-display font-semibold text-lg mb-1">Resto del país</p>
-        <p class="text-sm text-tinta/70 mb-3">Norte, Patagonia y demás provincias.</p>
-        <p class="precio-tag bg-yerba-dark text-crema font-mono text-sm font-semibold px-3 py-1.5 rounded">A confirmar · 4-7 días</p>
-      </div>
-    </div>
+    <div id="envios-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
   </div>
 </section>
 
@@ -725,62 +704,7 @@
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-10 sm:py-12 md:py-14">
     <h2 class="font-display font-semibold text-2xl sm:text-3xl tracking-tight mb-6">Preguntas frecuentes</h2>
 
-    <div class="space-y-2">
-      <details class="group bg-crema rounded-2xl p-4 sm:p-5 transition-shadow hover:shadow-md">
-        <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold list-none">
-          ¿Cómo hago un pedido?
-          <svg class="w-5 h-5 shrink-0 text-cobre-dark faq-chevron transition-transform"><use href="#icon-chevron"/></svg>
-        </summary>
-        <p class="mt-2 text-tinta/75 leading-relaxed">
-          Elegís el producto en el catálogo (o armás tu kit) y te lleva directo a WhatsApp
-          con el mensaje listo. Desde ahí coordinamos pago y envío.
-        </p>
-      </details>
-
-      <details class="group bg-crema rounded-2xl p-4 sm:p-5 transition-shadow hover:shadow-md">
-        <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold list-none">
-          ¿Qué métodos de pago aceptan?
-          <svg class="w-5 h-5 shrink-0 text-cobre-dark faq-chevron transition-transform"><use href="#icon-chevron"/></svg>
-        </summary>
-        <p class="mt-2 text-tinta/75 leading-relaxed">
-          Transferencia bancaria, Mercado Pago y efectivo en caso de retiro en Mendoza.
-          Te pasamos los datos por WhatsApp al confirmar el pedido.
-        </p>
-      </details>
-
-      <details class="group bg-crema rounded-2xl p-4 sm:p-5 transition-shadow hover:shadow-md">
-        <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold list-none">
-          ¿Los mates vienen curados?
-          <svg class="w-5 h-5 shrink-0 text-cobre-dark faq-chevron transition-transform"><use href="#icon-chevron"/></svg>
-        </summary>
-        <p class="mt-2 text-tinta/75 leading-relaxed">
-          Depende del modelo — te lo aclaramos en cada producto. Si preferís, te contamos
-          cómo curarlo vos mismo en casa, es más fácil de lo que parece.
-        </p>
-      </details>
-
-      <details class="group bg-crema rounded-2xl p-4 sm:p-5 transition-shadow hover:shadow-md">
-        <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold list-none">
-          ¿Hacen envíos a todo el país?
-          <svg class="w-5 h-5 shrink-0 text-cobre-dark faq-chevron transition-transform"><use href="#icon-chevron"/></svg>
-        </summary>
-        <p class="mt-2 text-tinta/75 leading-relaxed">
-          Sí, despachamos desde Mendoza a cualquier provincia. El costo y tiempo de
-          entrega varían según la zona — los vemos juntos por WhatsApp.
-        </p>
-      </details>
-
-      <details class="group bg-crema rounded-2xl p-4 sm:p-5 transition-shadow hover:shadow-md">
-        <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold list-none">
-          ¿Puedo seguirlos en Instagram para ver novedades?
-          <svg class="w-5 h-5 shrink-0 text-cobre-dark faq-chevron transition-transform"><use href="#icon-chevron"/></svg>
-        </summary>
-        <p class="mt-2 text-tinta/75 leading-relaxed">
-          Sí! En <strong>@jmates_mdz</strong> subimos fotos de productos nuevos,
-          combos y la vida del emprendimiento en Mendoza.
-        </p>
-      </details>
-    </div>
+    <div id="faq-lista" class="space-y-2"></div>
   </div>
 </section>
 
@@ -868,35 +792,13 @@
   // Ej: para Mendoza (261) 555-1234 -> "5492615551234"
   const WHATSAPP_NUMBER = "5492610000000";
 
-  // TODO: reemplazar con el catálogo real (nombre, descripción, precio, foto).
-  // category: 'mate' | 'bombilla' | 'yerba' | 'combo'
-  // image: foto del producto en la carpeta images/ (relacionada con su nombre).
-  //        Reemplazá por tus propias fotos manteniendo el nombre de archivo.
-  const PRODUCTS = [
-    { id: 'mate-imperial',  category: 'mate',     name: 'Mate Imperial Uruguayo', desc: 'Calabaza forrada en cuero con virola de alpaca.', price: 32000,
-      image: 'images/mate-imperial.jpg' },
-    { id: 'mate-camionero', category: 'mate',     name: 'Mate Camionero',         desc: 'Calabaza grande forrada en cuero, ideal para uso diario.', price: 18500,
-      image: 'images/mate-camionero.jpg' },
-    { id: 'mate-torpedo',   category: 'mate',     name: 'Mate Torpedo',           desc: 'Calabaza alargada con guarda gauchesca grabada.', price: 24000,
-      image: 'images/mate-torpedo.jpg' },
-
-    { id: 'bombilla-alpaca',     category: 'bombilla', name: 'Bombilla de Alpaca Clásica', desc: 'Bombilla recta con filtro removible, terminación en alpaca.', price: 7500,
-      image: 'images/bombilla-alpaca.jpg' },
-    { id: 'bombilla-pico-loro',  category: 'bombilla', name: 'Bombilla Pico de Loro',      desc: 'Diseño curvo tradicional, fácil de limpiar.', price: 9000,
-      image: 'images/bombilla-pico-loro.jpg' },
-
-    { id: 'yerba-canarias',  category: 'yerba', name: 'Yerba Canarias Especial',   desc: 'Con palo, sabor intenso. Paquete de 1kg.', price: 4200,
-      image: 'images/yerba-canarias.jpg' },
-    { id: 'yerba-playadito', category: 'yerba', name: 'Yerba Playadito Suave',     desc: 'Suave y despalada, ideal para empezar. 1kg.', price: 3800,
-      image: 'images/yerba-playadito.jpg' },
-    { id: 'yerba-merced',    category: 'yerba', name: 'Yerba La Merced Despalada', desc: 'Sin palo, molienda fina. 1kg.', price: 4500,
-      image: 'images/yerba-merced.jpg' },
-
-    { id: 'kit-inicial', category: 'combo', name: 'Kit Iniciación',     desc: 'Mate + bombilla + yerba 500g. Todo para arrancar.', price: 28000,
-      image: 'images/kit-inicial.jpg' },
-    { id: 'kit-ronda',   category: 'combo', name: 'Kit Ronda Completa', desc: '2 mates + 2 bombillas + yerba 1kg. Ideal para compartir.', price: 55000,
-      image: 'images/kit-ronda.jpg' },
-  ];
+  // Catálogo y configuración se cargan desde /data/*.json (editables en /admin).
+  // El boot() de más abajo hace el fetch y los rellena antes de renderizar.
+  let PRODUCTS = [];        // [{id, category, name, desc, price, image}]
+  let SHIPPING_ZONES = [];  // [{id, label, cost, aConfirmar, blurb, dias}]
+  let SHIPPING_INTRO = '';
+  let KIT = { title: 'Armá tu kit', intro: '', placeholder: '', pasos: {} };
+  let FAQ = [];             // [{q, a}]
 
   const CATEGORY_ICONS = {
     mate: 'icon-mate',
@@ -942,6 +844,82 @@
       const el = document.getElementById(id);
       if (el) setWhatsAppLink(el, mensajeGeneral);
     });
+
+  /* =====================================================================
+     CARGA DE DATOS DINÁMICOS (data/*.json, editables desde /admin)
+  ===================================================================== */
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, c =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  }
+  // Permite **negrita** en respuestas de FAQ (texto plano para el primo).
+  function mdBold(s) {
+    return esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  }
+
+  function envioTag(z) {
+    const dias = z.dias ? ' · ' + z.dias : '';
+    if (z.aConfirmar) return 'A confirmar' + dias;
+    if (z.cost > 0) return 'Desde ' + formatPrice(z.cost) + dias;
+    return 'Sin cargo' + dias;
+  }
+
+  function renderEnvios() {
+    const intro = document.getElementById('envios-intro');
+    if (intro && SHIPPING_INTRO) intro.textContent = SHIPPING_INTRO;
+    const g = document.getElementById('envios-grid');
+    if (!g) return;
+    g.innerHTML = SHIPPING_ZONES.map(z =>
+      '<div class="bg-arena rounded-2xl p-5">' +
+        '<p class="font-display font-semibold text-lg mb-1">' + esc(z.label) + '</p>' +
+        '<p class="text-sm text-tinta/70 mb-3">' + esc(z.blurb || '') + '</p>' +
+        '<p class="precio-tag bg-yerba-dark text-crema font-mono text-sm font-semibold px-3 py-1.5 rounded">' + esc(envioTag(z)) + '</p>' +
+      '</div>'
+    ).join('');
+  }
+
+  function renderFaq() {
+    const cont = document.getElementById('faq-lista');
+    if (!cont) return;
+    cont.innerHTML = FAQ.map(it =>
+      '<details class="group bg-crema rounded-2xl p-4 sm:p-5 transition-shadow hover:shadow-md">' +
+        '<summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold list-none">' +
+          esc(it.q) +
+          '<svg class="w-5 h-5 shrink-0 text-cobre-dark faq-chevron transition-transform"><use href="#icon-chevron"/></svg>' +
+        '</summary>' +
+        '<p class="mt-2 text-tinta/75 leading-relaxed">' + mdBold(it.a) + '</p>' +
+      '</details>'
+    ).join('');
+  }
+
+  function renderKitText() {
+    const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
+    set('kit-title', KIT.title);
+    set('kit-intro', KIT.intro);
+    set('kit-paso-mate', KIT.pasos && KIT.pasos.mate);
+    set('kit-paso-bombilla', KIT.pasos && KIT.pasos.bombilla);
+    set('kit-paso-yerba', KIT.pasos && KIT.pasos.yerba);
+  }
+
+  async function loadData() {
+    const get = (f) => fetch(f, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null);
+    const [p, s, k, fq] = await Promise.all([
+      get('data/products.json'), get('data/shipping.json'),
+      get('data/kit.json'), get('data/faq.json'),
+    ]);
+    if (p && Array.isArray(p.products)) PRODUCTS = p.products;
+    if (s && Array.isArray(s.zones)) { SHIPPING_ZONES = s.zones; SHIPPING_INTRO = s.intro || ''; }
+    if (k) KIT = Object.assign(KIT, k);
+    if (fq && Array.isArray(fq.items)) FAQ = fq.items;
+  }
+
+  // Todo lo que depende de los datos corre acá adentro, tras el fetch.
+  (async function boot() {
+    await loadData();
+    renderEnvios();
+    renderFaq();
+    renderKitText();
 
   /* =====================================================================
      CATALOG
@@ -1112,7 +1090,7 @@
     const elegidos = seleccionados.filter(Boolean);
 
     if (elegidos.length === 0) {
-      resumenEl.textContent = 'Elegí un producto de cada categoría para armar tu kit.';
+      resumenEl.textContent = KIT.placeholder || 'Elegí un producto de cada categoría para armar tu kit.';
       totalEl.textContent = '';
       btnPedir.classList.add('pointer-events-none', 'opacity-40');
       btnPagar.classList.add('pointer-events-none', 'opacity-40');
@@ -1163,13 +1141,8 @@
      CHECKOUT — Mercado Pago
   ===================================================================== */
 
-  // Zonas de envío (display; el server recalcula los montos reales).
-  const SHIPPING_ZONES = [
-    { id: 'mendoza', label: 'Mendoza (retiro / envío local)', cost: 0 },
-    { id: 'cuyo',    label: 'Cuyo / Centro',                  cost: 4000 },
-    { id: 'caba',    label: 'CABA / GBA',                     cost: 5500 },
-    { id: 'resto',   label: 'Resto del país',                 cost: 0, aConfirmar: true },
-  ];
+  // SHIPPING_ZONES ya viene de data/shipping.json (cargado en loadData).
+  // El server recalcula los montos reales; acá solo es display.
   const PRODUCT_BY_ID = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
 
   let coLineas = [];
@@ -1289,6 +1262,8 @@
   // Link "Escribinos" del modal
   const coWa = document.getElementById('checkout-wa');
   if (coWa) setWhatsAppLink(coWa, mensajeGeneral);
+
+  })(); // fin boot()
 
   /* Banner de resultado de pago (?pago=success|pending|failure) */
   (function () {

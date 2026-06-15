@@ -1,0 +1,9 @@
+{
+  "items": [
+    { "q": "¿Cómo hago un pedido?", "a": "Elegís el producto en el catálogo (o armás tu kit) y te lleva directo a WhatsApp con el mensaje listo. Desde ahí coordinamos pago y envío." },
+    { "q": "¿Qué métodos de pago aceptan?", "a": "Transferencia bancaria, Mercado Pago y efectivo en caso de retiro en Mendoza. Te pasamos los datos por WhatsApp al confirmar el pedido." },
+    { "q": "¿Los mates vienen curados?", "a": "Depende del modelo — te lo aclaramos en cada producto. Si preferís, te contamos cómo curarlo vos mismo en casa, es más fácil de lo que parece." },
+    { "q": "¿Hacen envíos a todo el país?", "a": "Sí, despachamos desde Mendoza a cualquier provincia. El costo y tiempo de entrega varían según la zona — los vemos juntos por WhatsApp." },
+    { "q": "¿Puedo seguirlos en Instagram para ver novedades?", "a": "Sí! En **@jmates_mdz** subimos fotos de productos nuevos, combos y la vida del emprendimiento en Mendoza." }
+  ]
+}

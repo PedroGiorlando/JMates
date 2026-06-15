@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>JMates — Panel de administración</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { colors: {
+    yerba: '#2F5D3A', 'yerba-dark': '#234A2D', crema: '#F7F3E9', arena: '#EFE7D3',
+    tinta: '#2B2B26', cobre: '#BE7240', 'cobre-dark': '#9E5C30'
+  } } } };
+</script>
+<style>
+  body { background: #EFE7D3; color: #2B2B26; }
+  input, textarea, select { background: #fff; }
+  .inp { width: 100%; border: 1px solid rgba(43,43,38,.18); border-radius: .5rem; padding: .5rem .65rem; font-size: .9rem; }
+  .inp:focus { outline: none; border-color: #BE7240; }
+  .btn { display: inline-flex; align-items: center; gap: .4rem; border-radius: 9999px; font-weight: 600; padding: .6rem 1.2rem; transition: .15s; cursor: pointer; }
+  .btn-primary { background: #BE7240; color: #F7F3E9; }
+  .btn-primary:hover { background: #9E5C30; }
+  .btn-primary:disabled { opacity: .5; cursor: default; }
+  .btn-ghost { background: rgba(43,43,38,.06); color: #2B2B26; }
+  .btn-ghost:hover { background: rgba(43,43,38,.12); }
+  .tab { padding: .55rem 1rem; border-radius: 9999px; font-weight: 600; cursor: pointer; font-size: .9rem; }
+  .tab-active { background: #234A2D; color: #F7F3E9; }
+  .card { background: #fff; border-radius: 1rem; padding: 1rem 1.1rem; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  label.fld { display: block; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: rgba(43,43,38,.6); margin-bottom: .25rem; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ===== LOGIN ===== -->
+<div id="login" class="min-h-screen flex items-center justify-center px-4">
+  <div class="card w-full max-w-sm">
+    <h1 class="font-bold text-2xl mb-1">JMates · Admin</h1>
+    <p class="text-sm text-tinta/60 mb-5">Ingresá la contraseña para administrar la tienda.</p>
+    <form id="login-form" class="space-y-3">
+      <input id="login-pass" type="password" class="inp" placeholder="Contraseña" autocomplete="current-password" />
+      <p id="login-error" class="text-sm text-red-700"></p>
+      <button type="submit" class="btn btn-primary w-full justify-center">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== PANEL ===== -->
+<div id="panel" class="hidden max-w-5xl mx-auto px-4 py-6">
+  <header class="flex items-center justify-between mb-5">
+    <h1 class="font-bold text-xl">JMates · Panel</h1>
+    <button id="logout" class="btn btn-ghost text-sm">Salir</button>
+  </header>
+
+  <nav class="flex flex-wrap gap-2 mb-5">
+    <button class="tab tab-active" data-tab="catalogo">Catálogo</button>
+    <button class="tab" data-tab="kit">Kit</button>
+    <button class="tab" data-tab="envios">Envíos</button>
+    <button class="tab" data-tab="faq">Preguntas</button>
+  </nav>
+
+  <div id="toast" class="hidden mb-4 rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+  <section id="tab-catalogo" class="tabpane space-y-3"></section>
+  <section id="tab-kit" class="tabpane hidden space-y-3"></section>
+  <section id="tab-envios" class="tabpane hidden space-y-3"></section>
+  <section id="tab-faq" class="tabpane hidden space-y-3"></section>
+</div>
+
+<script>
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const CATEGORIES = [['mate','Mate'],['bombilla','Bombilla'],['yerba','Yerba'],['combo','Combo / Kit']];
+
+let TOKEN = sessionStorage.getItem('jm_admin_token') || '';
+let DATA = { products: [], shipping: { intro: '', zones: [] }, kit: {}, faq: { items: [] } };
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+async function api(path, body) {
+  const r = await fetch(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+    body: JSON.stringify(body),
+  });
+  const j = await r.json().catch(()=>({}));
+  if (!r.ok) throw new Error(j.error || ('error ' + r.status));
+  return j;
+}
+
+function toast(msg, ok=true) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = 'mb-4 rounded-lg px-4 py-3 text-sm font-medium ' + (ok ? 'bg-yerba text-crema' : 'bg-red-700 text-crema');
+  t.classList.remove('hidden');
+  if (ok) setTimeout(()=>t.classList.add('hidden'), 8000);
+}
+
+/* ---------- LOGIN ---------- */
+$('#login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  $('#login-error').textContent = '';
+  try {
+    const { token } = await api('/api/admin/login', { password: $('#login-pass').value });
+    TOKEN = token;
+    sessionStorage.setItem('jm_admin_token', token);
+    await startPanel();
+  } catch (err) {
+    $('#login-error').textContent = 'Contraseña incorrecta.';
+  }
+});
+$('#logout').addEventListener('click', () => {
+  sessionStorage.removeItem('jm_admin_token'); TOKEN = '';
+  $('#panel').classList.add('hidden'); $('#login').classList.remove('hidden');
+});
+
+/* ---------- DATA LOAD ---------- */
+async function loadAll() {
+  const get = (f) => fetch(f, { cache:'no-store' }).then(r => r.ok ? r.json() : null).catch(()=>null);
+  const [p,s,k,fq] = await Promise.all([
+    get('/data/products.json'), get('/data/shipping.json'), get('/data/kit.json'), get('/data/faq.json')
+  ]);
+  DATA.products = (p && p.products) || [];
+  DATA.shipping = s || { intro:'', zones:[] };
+  DATA.kit = k || {};
+  DATA.faq = fq || { items: [] };
+}
+
+async function startPanel() {
+  $('#login').classList.add('hidden');
+  $('#panel').classList.remove('hidden');
+  await loadAll();
+  renderCatalogo(); renderKit(); renderEnvios(); renderFaq();
+}
+
+/* ---------- TABS ---------- */
+$$('.tab').forEach(t => t.addEventListener('click', () => {
+  $$('.tab').forEach(x => x.classList.remove('tab-active'));
+  t.classList.add('tab-active');
+  $$('.tabpane').forEach(p => p.classList.add('hidden'));
+  $('#tab-' + t.dataset.tab).classList.remove('hidden');
+}));
+
+/* ===================== CATÁLOGO ===================== */
+function renderCatalogo() {
+  const pane = $('#tab-catalogo');
+  pane.innerHTML = `
+    <div class="flex items-center justify-between flex-wrap gap-2">
+      <p class="text-sm text-tinta/70">Editá precios, nombres, descripciones y fotos. Categoría <b>Combo / Kit</b> = los kits armados del catálogo.</p>
+      <button class="btn btn-ghost text-sm" id="prod-add">+ Agregar producto</button>
+    </div>
+    <div id="prod-list" class="space-y-3"></div>
+    <div class="flex justify-end pt-2">
+      <button class="btn btn-primary" id="prod-save">Guardar catálogo</button>
+    </div>`;
+  const list = $('#prod-list');
+  DATA.products.forEach((p, i) => list.appendChild(prodRow(p, i)));
+  $('#prod-add').onclick = () => {
+    DATA.products.push({ id:'', category:'mate', name:'', desc:'', price:0, image:'' });
+    renderCatalogo();
+  };
+  $('#prod-save').onclick = saveCatalogo;
+}
+
+function prodRow(p, i) {
+  const el = document.createElement('div');
+  el.className = 'card grid sm:grid-cols-[88px_1fr] gap-3';
+  el.innerHTML = `
+    <div>
+      <div class="aspect-square rounded-lg bg-arena overflow-hidden flex items-center justify-center">
+        <img class="w-full h-full object-cover ${p.image?'':'hidden'}" src="${esc(p.image)}" data-img />
+        <span class="text-[10px] text-tinta/40 px-1 text-center ${p.image?'hidden':''}" data-imgph>sin foto</span>
+      </div>
+      <label class="btn btn-ghost text-xs w-full justify-center mt-1.5" style="padding:.35rem">
+        <span data-uplabel>Subir foto</span>
+        <input type="file" accept="image/*" class="hidden" data-file>
+      </label>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-2">
+      <div class="sm:col-span-2"><label class="fld">Nombre</label><input class="inp" data-f="name" value="${esc(p.name)}"></div>
+      <div><label class="fld">Categoría</label>
+        <select class="inp" data-f="category">${CATEGORIES.map(c=>`<option value="${c[0]}" ${p.category===c[0]?'selected':''}>${c[1]}</option>`).join('')}</select>
+      </div>
+      <div><label class="fld">Precio (ARS)</label><input class="inp" type="number" min="0" data-f="price" value="${Number(p.price)||0}"></div>
+      <div class="sm:col-span-2"><label class="fld">Descripción</label><textarea class="inp" rows="2" data-f="desc">${esc(p.desc)}</textarea></div>
+      <div class="sm:col-span-2 flex justify-end">
+        <button class="text-sm text-red-700 hover:underline" data-del>Eliminar producto</button>
+      </div>
+    </div>`;
+  // bind fields
+  $$('[data-f]', el).forEach(inp => inp.addEventListener('input', () => {
+    const f = inp.dataset.f;
+    DATA.products[i][f] = f === 'price' ? Number(inp.value) : inp.value;
+  }));
+  $('[data-del]', el).onclick = () => { DATA.products.splice(i,1); renderCatalogo(); };
+  // image upload
+  const fileInput = $('[data-file]', el);
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0]; if (!file) return;
+    const label = $('[data-uplabel]', el);
+    label.textContent = 'Subiendo…';
+    try {
+      const dataUrl = await new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file); });
+      const fname = (DATA.products[i].id || DATA.products[i].name || 'foto').toString();
+      const { path } = await api('/api/admin/upload', { filename: fname, dataUrl });
+      DATA.products[i].image = path;
+      const img = $('[data-img]', el), ph = $('[data-imgph]', el);
+      img.src = path + '?t=' + Date.now(); img.classList.remove('hidden'); ph.classList.add('hidden');
+      label.textContent = 'Cambiar foto';
+      toast('Foto subida. Acordate de "Guardar catálogo" para publicar.');
+    } catch (err) {
+      label.textContent = 'Subir foto';
+      toast('Error al subir: ' + err.message, false);
+    }
+  });
+  return el;
+}
+
+async function saveCatalogo() {
+  const btn = $('#prod-save'); btn.disabled = true; btn.textContent = 'Guardando…';
+  try {
+    await api('/api/admin/save', { section: 'products', data: { products: DATA.products } });
+    toast('✅ Catálogo guardado. Aparece en la página en ~30 segundos.');
+  } catch (err) { toast('Error: ' + err.message, false); }
+  btn.disabled = false; btn.textContent = 'Guardar catálogo';
+}
+
+/* ===================== KIT ===================== */
+function renderKit() {
+  const k = DATA.kit; const pasos = k.pasos || {};
+  $('#tab-kit').innerHTML = `
+    <div class="card space-y-3">
+      <p class="text-sm text-tinta/70">Textos de la sección "Armá tu kit". Los productos elegibles salen del catálogo.</p>
+      <div><label class="fld">Título</label><input class="inp" id="k-title" value="${esc(k.title||'')}"></div>
+      <div><label class="fld">Texto introductorio</label><textarea class="inp" rows="2" id="k-intro">${esc(k.intro||'')}</textarea></div>
+      <div><label class="fld">Mensaje cuando no eligió nada</label><input class="inp" id="k-ph" value="${esc(k.placeholder||'')}"></div>
+      <div class="grid sm:grid-cols-3 gap-2">
+        <div><label class="fld">Paso mate</label><input class="inp" id="k-pm" value="${esc(pasos.mate||'')}"></div>
+        <div><label class="fld">Paso bombilla</label><input class="inp" id="k-pb" value="${esc(pasos.bombilla||'')}"></div>
+        <div><label class="fld">Paso yerba</label><input class="inp" id="k-py" value="${esc(pasos.yerba||'')}"></div>
+      </div>
+    </div>
+    <div class="flex justify-end"><button class="btn btn-primary" id="k-save">Guardar kit</button></div>`;
+  $('#k-save').onclick = async () => {
+    const btn = $('#k-save'); btn.disabled = true; btn.textContent = 'Guardando…';
+    try {
+      await api('/api/admin/save', { section: 'kit', data: {
+        title: $('#k-title').value, intro: $('#k-intro').value, placeholder: $('#k-ph').value,
+        pasos: { mate: $('#k-pm').value, bombilla: $('#k-pb').value, yerba: $('#k-py').value }
+      }});
+      toast('✅ Kit guardado. Aparece en ~30 segundos.');
+    } catch (err) { toast('Error: ' + err.message, false); }
+    btn.disabled = false; btn.textContent = 'Guardar kit';
+  };
+}
+
+/* ===================== ENVÍOS ===================== */
+function renderEnvios() {
+  const pane = $('#tab-envios');
+  pane.innerHTML = `
+    <div class="card"><label class="fld">Texto introductorio de la sección</label>
+      <textarea class="inp" rows="2" id="env-intro">${esc(DATA.shipping.intro||'')}</textarea></div>
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-tinta/70"><b>Precio</b> = lo que se cobra online. "A confirmar" no cobra envío online.</p>
+      <button class="btn btn-ghost text-sm" id="env-add">+ Agregar zona</button>
+    </div>
+    <div id="env-list" class="space-y-3"></div>
+    <div class="flex justify-end"><button class="btn btn-primary" id="env-save">Guardar envíos</button></div>`;
+  const list = $('#env-list');
+  (DATA.shipping.zones || []).forEach((z, i) => list.appendChild(zoneRow(z, i)));
+  $('#env-add').onclick = () => {
+    DATA.shipping.zones.push({ id:'', label:'', blurb:'', cost:0, dias:'', aConfirmar:false });
+    renderEnvios();
+  };
+  $('#env-save').onclick = saveEnvios;
+}
+
+function zoneRow(z, i) {
+  const el = document.createElement('div');
+  el.className = 'card grid sm:grid-cols-2 gap-2';
+  el.innerHTML = `
+    <div class="sm:col-span-2"><label class="fld">Nombre de la zona</label><input class="inp" data-f="label" value="${esc(z.label)}"></div>
+    <div class="sm:col-span-2"><label class="fld">Detalle (provincias, aclaración)</label><input class="inp" data-f="blurb" value="${esc(z.blurb)}"></div>
+    <div><label class="fld">Precio del envío (ARS)</label><input class="inp" type="number" min="0" data-f="cost" value="${Number(z.cost)||0}"></div>
+    <div><label class="fld">Tiempo de entrega</label><input class="inp" data-f="dias" value="${esc(z.dias)}" placeholder="ej: 2-4 días"></div>
+    <label class="flex items-center gap-2 text-sm sm:col-span-2"><input type="checkbox" data-f="aConfirmar" ${z.aConfirmar?'checked':''}> Precio "a confirmar" (no se cobra envío online)</label>
+    <div class="sm:col-span-2 flex justify-end"><button class="text-sm text-red-700 hover:underline" data-del>Eliminar zona</button></div>`;
+  $$('[data-f]', el).forEach(inp => inp.addEventListener('input', () => {
+    const f = inp.dataset.f;
+    DATA.shipping.zones[i][f] = f === 'cost' ? Number(inp.value) : (f === 'aConfirmar' ? inp.checked : inp.value);
+  }));
+  $('[data-del]', el).onclick = () => { DATA.shipping.zones.splice(i,1); renderEnvios(); };
+  return el;
+}
+
+async function saveEnvios() {
+  const btn = $('#env-save'); btn.disabled = true; btn.textContent = 'Guardando…';
+  try {
+    await api('/api/admin/save', { section: 'shipping', data: { intro: $('#env-intro').value, zones: DATA.shipping.zones } });
+    toast('✅ Envíos guardados. Aparece en ~30 segundos.');
+  } catch (err) { toast('Error: ' + err.message, false); }
+  btn.disabled = false; btn.textContent = 'Guardar envíos';
+}
+
+/* ===================== FAQ ===================== */
+function renderFaq() {
+  const pane = $('#tab-faq');
+  pane.innerHTML = `
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-tinta/70">Usá <b>**texto**</b> para negrita. Las flechas reordenan.</p>
+      <button class="btn btn-ghost text-sm" id="faq-add">+ Agregar pregunta</button>
+    </div>
+    <div id="faq-list" class="space-y-3"></div>
+    <div class="flex justify-end"><button class="btn btn-primary" id="faq-save">Guardar preguntas</button></div>`;
+  const list = $('#faq-list');
+  (DATA.faq.items || []).forEach((it, i) => list.appendChild(faqRow(it, i)));
+  $('#faq-add').onclick = () => { DATA.faq.items.push({ q:'', a:'' }); renderFaq(); };
+  $('#faq-save').onclick = saveFaq;
+}
+
+function faqRow(it, i) {
+  const items = DATA.faq.items;
+  const el = document.createElement('div');
+  el.className = 'card space-y-2';
+  el.innerHTML = `
+    <div class="flex items-start gap-2">
+      <div class="flex-1 space-y-2">
+        <div><label class="fld">Pregunta</label><input class="inp" data-f="q" value="${esc(it.q)}"></div>
+        <div><label class="fld">Respuesta</label><textarea class="inp" rows="2" data-f="a">${esc(it.a)}</textarea></div>
+      </div>
+      <div class="flex flex-col gap-1 pt-5">
+        <button class="btn-ghost rounded px-2 py-1 text-sm" data-up ${i===0?'disabled style=opacity:.3':''}>▲</button>
+        <button class="btn-ghost rounded px-2 py-1 text-sm" data-down ${i===items.length-1?'disabled style=opacity:.3':''}>▼</button>
+      </div>
+    </div>
+    <div class="flex justify-end"><button class="text-sm text-red-700 hover:underline" data-del>Eliminar</button></div>`;
+  $$('[data-f]', el).forEach(inp => inp.addEventListener('input', () => { items[i][inp.dataset.f] = inp.value; }));
+  $('[data-del]', el).onclick = () => { items.splice(i,1); renderFaq(); };
+  const up = $('[data-up]', el), down = $('[data-down]', el);
+  if (up) up.onclick = () => { if (i>0){ [items[i-1],items[i]]=[items[i],items[i-1]]; renderFaq(); } };
+  if (down) down.onclick = () => { if (i<items.length-1){ [items[i+1],items[i]]=[items[i],items[i+1]]; renderFaq(); } };
+  return el;
+}
+
+async function saveFaq() {
+  const btn = $('#faq-save'); btn.disabled = true; btn.textContent = 'Guardando…';
+  try {
+    await api('/api/admin/save', { section: 'faq', data: { items: DATA.faq.items } });
+    toast('✅ Preguntas guardadas. Aparece en ~30 segundos.');
+  } catch (err) { toast('Error: ' + err.message, false); }
+  btn.disabled = false; btn.textContent = 'Guardar preguntas';
+}
+
+/* ---------- AUTO-RESUME SESSION ---------- */
+if (TOKEN) { startPanel().catch(()=>{ sessionStorage.removeItem('jm_admin_token'); TOKEN=''; }); }
+</script>
+</body>
+</html>
