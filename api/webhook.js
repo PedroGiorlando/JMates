@@ -88,6 +88,7 @@ module.exports = async (req, res) => {
         comprador.nombre ||
         '—';
       const email = payer.email || comprador.email || '—';
+      const tel = comprador.tel || '—';
 
       const text =
         '🧉 *Nuevo pedido pagado — JMates*\n' +
@@ -96,6 +97,7 @@ module.exports = async (req, res) => {
         `Envío: ${zonaLabel}${aConfirmar ? ' (a confirmar aparte)' : ''}\n` +
         `Total cobrado: ${fmt(payment.transaction_amount)}\n\n` +
         `Comprador: ${nombre}\n` +
+        `WhatsApp: ${tel}\n` +
         `Email: ${email}\n` +
         `Pago MP: ${payment.id} (${payment.status})`;
 
