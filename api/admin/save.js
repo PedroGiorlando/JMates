@@ -40,6 +40,7 @@ function validateProducts(data) {
       desc: str(p.desc, 400),
       price: money(p.price),
       image: str(p.image, 300),
+      inKit: p.inKit !== false,
     };
   });
   return { products };
@@ -73,6 +74,7 @@ function validateKit(data) {
     title: str(data && data.title, 80) || 'Armá tu kit',
     intro: str(data && data.intro, 400),
     placeholder: str(data && data.placeholder, 200),
+    discount: Math.min(100, Math.max(0, Math.round(Number((data && data.discount) || 0)))),
     pasos: {
       mate: str(pasos.mate, 60) || '1. Elegí tu mate',
       bombilla: str(pasos.bombilla, 60) || '2. Elegí tu bombilla',

@@ -2,6 +2,7 @@
   "title": "Armá tu kit",
   "intro": "Elegí tu mate, tu bombilla y tu yerba. Te armamos el pedido completo y te lo mandamos listo a WhatsApp para confirmar.",
   "placeholder": "Elegí un producto de cada categoría para armar tu kit.",
+  "discount": 0,
   "pasos": {
     "mate": "1. Elegí tu mate",
     "bombilla": "2. Elegí tu bombilla",

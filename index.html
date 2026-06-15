@@ -1077,7 +1077,7 @@
 
   ['mate', 'bombilla', 'yerba'].forEach(cat => {
     const container = document.getElementById(`kit-${cat}`);
-    PRODUCTS.filter(p => p.category === cat).forEach(p => container.appendChild(kitOption(p)));
+    PRODUCTS.filter(p => p.category === cat && p.inKit !== false).forEach(p => container.appendChild(kitOption(p)));
   });
 
   function updateKitSummary() {
@@ -1099,14 +1099,22 @@
 
     resumenEl.innerHTML = elegidos.map(p => `• ${p.name}`).join('<br>');
 
-    const total = elegidos.reduce((sum, p) => sum + p.price, 0);
-    totalEl.textContent = formatPrice(total);
+    const subtotal = elegidos.reduce((sum, p) => sum + p.price, 0);
+    const pct = Number(KIT.discount) || 0;
+    const total = (pct > 0 && elegidos.length === 3) ? Math.round(subtotal * (1 - pct / 100)) : subtotal;
+
+    if (pct > 0 && elegidos.length === 3) {
+      totalEl.innerHTML = `<span class="line-through opacity-50 mr-1">${formatPrice(subtotal)}</span>${formatPrice(total)} <span class="text-sm font-normal text-yerba">(-${pct}%)</span>`;
+    } else {
+      totalEl.textContent = formatPrice(total);
+    }
 
     if (elegidos.length === 3) {
       btnPedir.classList.remove('pointer-events-none', 'opacity-40');
       btnPagar.classList.remove('pointer-events-none', 'opacity-40');
       const lines = elegidos.map(p => `- ${p.name} (${formatPrice(p.price)})`).join('\n');
-      const msg = `Hola! Quiero armar este kit:\n\n${lines}\n\nTotal: ${formatPrice(total)}\n\n¿Me confirman disponibilidad y costo de envío?`;
+      const descLine = pct > 0 ? `\nDescuento kit ${pct}%: -${formatPrice(subtotal - total)}` : '';
+      const msg = `Hola! Quiero armar este kit:\n\n${lines}${descLine}\n\nTotal: ${formatPrice(total)}\n\n¿Me confirman disponibilidad y costo de envío?`;
       setWhatsAppLink(btnPedir, msg);
     } else {
       btnPedir.classList.add('pointer-events-none', 'opacity-40');

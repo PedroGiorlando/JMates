@@ -1,14 +1,14 @@
 {
   "products": [
-    { "id": "mate-imperial", "category": "mate", "name": "Mate Imperial Uruguayo", "desc": "Calabaza forrada en cuero con virola de alpaca.", "price": 32000, "image": "images/mate-imperial.jpg" },
-    { "id": "mate-camionero", "category": "mate", "name": "Mate Camionero", "desc": "Calabaza grande forrada en cuero, ideal para uso diario.", "price": 18500, "image": "images/mate-camionero.jpg" },
-    { "id": "mate-torpedo", "category": "mate", "name": "Mate Torpedo", "desc": "Calabaza alargada con guarda gauchesca grabada.", "price": 24000, "image": "images/mate-torpedo.jpg" },
-    { "id": "bombilla-alpaca", "category": "bombilla", "name": "Bombilla de Alpaca Clásica", "desc": "Bombilla recta con filtro removible, terminación en alpaca.", "price": 7500, "image": "images/bombilla-alpaca.jpg" },
-    { "id": "bombilla-pico-loro", "category": "bombilla", "name": "Bombilla Pico de Loro", "desc": "Diseño curvo tradicional, fácil de limpiar.", "price": 9000, "image": "images/bombilla-pico-loro.jpg" },
-    { "id": "yerba-canarias", "category": "yerba", "name": "Yerba Canarias Especial", "desc": "Con palo, sabor intenso. Paquete de 1kg.", "price": 4200, "image": "images/yerba-canarias.jpg" },
-    { "id": "yerba-playadito", "category": "yerba", "name": "Yerba Playadito Suave", "desc": "Suave y despalada, ideal para empezar. 1kg.", "price": 3800, "image": "images/yerba-playadito.jpg" },
-    { "id": "yerba-merced", "category": "yerba", "name": "Yerba La Merced Despalada", "desc": "Sin palo, molienda fina. 1kg.", "price": 4500, "image": "images/yerba-merced.jpg" },
-    { "id": "kit-inicial", "category": "combo", "name": "Kit Iniciación", "desc": "Mate + bombilla + yerba 500g. Todo para arrancar.", "price": 28000, "image": "images/kit-inicial.jpg" },
-    { "id": "kit-ronda", "category": "combo", "name": "Kit Ronda Completa", "desc": "2 mates + 2 bombillas + yerba 1kg. Ideal para compartir.", "price": 55000, "image": "images/kit-ronda.jpg" }
+    { "id": "mate-imperial", "category": "mate", "name": "Mate Imperial Uruguayo", "desc": "Calabaza forrada en cuero con virola de alpaca.", "price": 32000, "image": "images/mate-imperial.jpg", "inKit": true },
+    { "id": "mate-camionero", "category": "mate", "name": "Mate Camionero", "desc": "Calabaza grande forrada en cuero, ideal para uso diario.", "price": 18500, "image": "images/mate-camionero.jpg", "inKit": true },
+    { "id": "mate-torpedo", "category": "mate", "name": "Mate Torpedo", "desc": "Calabaza alargada con guarda gauchesca grabada.", "price": 24000, "image": "images/mate-torpedo.jpg", "inKit": true },
+    { "id": "bombilla-alpaca", "category": "bombilla", "name": "Bombilla de Alpaca Clásica", "desc": "Bombilla recta con filtro removible, terminación en alpaca.", "price": 7500, "image": "images/bombilla-alpaca.jpg", "inKit": true },
+    { "id": "bombilla-pico-loro", "category": "bombilla", "name": "Bombilla Pico de Loro", "desc": "Diseño curvo tradicional, fácil de limpiar.", "price": 9000, "image": "images/bombilla-pico-loro.jpg", "inKit": true },
+    { "id": "yerba-canarias", "category": "yerba", "name": "Yerba Canarias Especial", "desc": "Con palo, sabor intenso. Paquete de 1kg.", "price": 4200, "image": "images/yerba-canarias.jpg", "inKit": true },
+    { "id": "yerba-playadito", "category": "yerba", "name": "Yerba Playadito Suave", "desc": "Suave y despalada, ideal para empezar. 1kg.", "price": 3800, "image": "images/yerba-playadito.jpg", "inKit": true },
+    { "id": "yerba-merced", "category": "yerba", "name": "Yerba La Merced Despalada", "desc": "Sin palo, molienda fina. 1kg.", "price": 4500, "image": "images/yerba-merced.jpg", "inKit": true },
+    { "id": "kit-inicial", "category": "combo", "name": "Kit Iniciación", "desc": "Mate + bombilla + yerba 500g. Todo para arrancar.", "price": 28000, "image": "images/kit-inicial.jpg", "inKit": false },
+    { "id": "kit-ronda", "category": "combo", "name": "Kit Ronda Completa", "desc": "2 mates + 2 bombillas + yerba 1kg. Ideal para compartir.", "price": 55000, "image": "images/kit-ronda.jpg", "inKit": false }
   ]
 }
