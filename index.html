@@ -525,24 +525,39 @@
       </div>
     </div>
 
-    <!-- Foto del hero: mate cebado, en círculo (motivo de marca) -->
-    <div class="relative w-full max-w-[16rem] sm:max-w-sm mx-auto aspect-square">
-      <!-- anillo punteado desfasado como marco decorativo -->
-      <div class="absolute -inset-3 sm:-inset-4 rounded-full orbit-ring"></div>
-      <!-- vapor subiendo desde la foto -->
-      <div class="steam absolute left-1/2 -translate-x-1/2 -top-3 z-10 flex items-end gap-1.5 text-crema/60 pointer-events-none" aria-hidden="true">
+    <!-- Collage del hero: mate principal en círculo (marca) + productos + chips -->
+    <div class="relative w-full max-w-sm sm:max-w-md mx-auto aspect-square">
+      <!-- anillo punteado detrás del mate principal -->
+      <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[66%] -ml-3 aspect-square">
+        <div class="absolute -inset-3 rounded-full orbit-ring"></div>
+      </div>
+      <!-- vapor subiendo desde el mate principal -->
+      <div class="steam absolute left-[31%] -translate-x-1/2 -top-1 z-20 flex items-end gap-1.5 text-crema/60 pointer-events-none" aria-hidden="true">
         <svg class="steam-wisp steam-1 w-2.5 h-9"><use href="#icon-steam"/></svg>
         <svg class="steam-wisp steam-2 w-2.5 h-10"><use href="#icon-steam"/></svg>
         <svg class="steam-wisp steam-3 w-2.5 h-9"><use href="#icon-steam"/></svg>
       </div>
-      <!-- foto en círculo (LCP: sin lazy, alta prioridad) -->
+      <!-- mate principal en círculo (LCP: sin lazy, alta prioridad) -->
       <img src="images/hero-mate.jpg" alt="Mate cebado listo para la ronda"
            fetchpriority="high" decoding="async"
-           class="relative w-full h-full rounded-full object-cover shadow-xl ring-1 ring-crema/15">
-      <!-- etiqueta de marca flotante -->
-      <p class="precio-tag absolute -bottom-3 left-2 sm:left-0 bg-cobre text-crema font-mono text-xs sm:text-sm font-semibold px-3 py-1.5 rounded shadow-lg">
+           class="absolute left-0 top-1/2 -translate-y-1/2 w-[64%] aspect-square rounded-full object-cover shadow-xl ring-1 ring-crema/15 z-10">
+      <!-- producto secundario: mate, arriba a la derecha -->
+      <img src="images/mate-imperial.jpg" alt="Mate imperial uruguayo"
+           loading="lazy" decoding="async"
+           class="absolute right-0 top-0 w-[42%] aspect-square rounded-2xl object-cover shadow-lg ring-1 ring-crema/15 rotate-3 z-20">
+      <!-- producto secundario: yerba, abajo a la derecha -->
+      <img src="images/yerba-canarias.jpg" alt="Yerba seleccionada"
+           loading="lazy" decoding="async"
+           class="absolute right-[6%] bottom-[4%] w-[35%] aspect-square rounded-2xl object-cover shadow-lg ring-1 ring-crema/15 -rotate-2 z-20">
+      <!-- chip: envíos -->
+      <p class="precio-tag absolute left-[1%] bottom-[9%] z-30 bg-cobre text-crema font-mono text-xs sm:text-sm font-semibold px-3 py-1.5 rounded shadow-lg">
         <svg class="w-4 h-4"><use href="#icon-truck"/></svg>
         Envíos a todo el país
+      </p>
+      <!-- chip: medio de pago -->
+      <p class="absolute right-[4%] top-[45%] z-30 flex items-center gap-1.5 bg-crema text-yerba-dark font-mono text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded shadow-lg">
+        <svg class="w-3.5 h-3.5"><use href="#icon-card"/></svg>
+        Pagás con Mercado Pago
       </p>
     </div>
   </div>
