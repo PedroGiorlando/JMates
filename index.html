@@ -140,6 +140,49 @@
     100% { opacity: 0; transform: translateY(-12px) scaleY(1.15); }
   }
 
+  /* ---- Hero collage: profundidad + movimiento ---- */
+  /* Spotlight cálido detrás del conjunto */
+  .hero-glow {
+    position: absolute; inset: -14% -10% -10% -12%; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(42% 42% at 33% 52%, rgba(190,114,64,0.42), transparent 70%),
+      radial-gradient(40% 40% at 74% 26%, rgba(183,196,168,0.32), transparent 72%);
+    filter: blur(8px);
+  }
+  /* Mate principal: aro cobre + sombra honda (lenguaje del catálogo) */
+  .hero-main-ring {
+    border-radius: 9999px;
+    box-shadow: 0 0 0 3px rgba(190,114,64,0.92), 0 28px 46px -22px rgba(0,0,0,0.72);
+  }
+  /* Fotos de producto: sombra honda en capas */
+  .hero-card { box-shadow: 0 24px 40px -20px rgba(0,0,0,0.78); border-radius: 1rem; }
+  /* Chip "glass": vidrio verde translúcido con desenfoque */
+  .hero-chip-glass {
+    display: inline-flex; align-items: center; gap: .45rem;
+    background: rgba(27,55,33,0.55);
+    -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px);
+    border: 1px solid rgba(247,243,233,0.30);
+    color: #F7F3E9;
+    box-shadow: 0 12px 26px -14px rgba(0,0,0,0.65);
+  }
+  /* Hojas de yerba decorativas */
+  .hero-leaf { position: absolute; color: rgba(183,196,168,0.5); pointer-events: none; z-index: 25; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-float-a { animation: hero-float 6.5s ease-in-out infinite; }
+    .hero-float-b { animation: hero-float 7.6s ease-in-out infinite; animation-delay: .9s; }
+    .hero-leaf-1 { animation: hero-drift 9s ease-in-out infinite; }
+    .hero-leaf-2 { animation: hero-drift 11s ease-in-out infinite reverse; }
+  }
+  @keyframes hero-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+  @keyframes hero-drift {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50%      { transform: translate(5px, -9px) rotate(10deg); }
+  }
+
   /* Hide scrollbar on mobile category strip */
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -527,8 +570,13 @@
 
     <!-- Collage del hero: mate principal en círculo (marca) + productos + chips -->
     <div class="relative w-full max-w-sm sm:max-w-md mx-auto aspect-square">
+      <!-- spotlight cálido detrás del conjunto -->
+      <div class="hero-glow" aria-hidden="true"></div>
+      <!-- hojas de yerba flotando -->
+      <svg class="hero-leaf hero-leaf-1 w-6 h-6" style="left:5%;top:7%" aria-hidden="true"><use href="#icon-leaf"/></svg>
+      <svg class="hero-leaf hero-leaf-2 w-4 h-4" style="right:31%;bottom:15%" aria-hidden="true"><use href="#icon-leaf"/></svg>
       <!-- anillo punteado detrás del mate principal -->
-      <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[66%] -ml-3 aspect-square">
+      <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[66%] -ml-3 aspect-square z-[1]">
         <div class="absolute -inset-3 rounded-full orbit-ring"></div>
       </div>
       <!-- vapor subiendo desde el mate principal -->
@@ -537,25 +585,31 @@
         <svg class="steam-wisp steam-2 w-2.5 h-10"><use href="#icon-steam"/></svg>
         <svg class="steam-wisp steam-3 w-2.5 h-9"><use href="#icon-steam"/></svg>
       </div>
-      <!-- mate principal en círculo (LCP: sin lazy, alta prioridad) -->
-      <img src="images/hero-mate.jpg" alt="Mate cebado listo para la ronda"
-           fetchpriority="high" decoding="async"
-           class="absolute left-0 top-1/2 -translate-y-1/2 w-[64%] aspect-square rounded-full object-cover shadow-xl ring-1 ring-crema/15 z-10">
-      <!-- producto secundario: mate, arriba a la derecha -->
-      <img src="images/mate-imperial.jpg" alt="Mate imperial uruguayo"
-           loading="lazy" decoding="async"
-           class="absolute right-0 top-0 w-[42%] aspect-square rounded-2xl object-cover shadow-lg ring-1 ring-crema/15 rotate-3 z-20">
-      <!-- producto secundario: yerba, abajo a la derecha -->
-      <img src="images/yerba-canarias.jpg" alt="Yerba seleccionada"
-           loading="lazy" decoding="async"
-           class="absolute right-[6%] bottom-[4%] w-[35%] aspect-square rounded-2xl object-cover shadow-lg ring-1 ring-crema/15 -rotate-2 z-20">
-      <!-- chip: envíos -->
+      <!-- mate principal en círculo, aro cobre (LCP: sin lazy, alta prioridad) -->
+      <div class="hero-main-ring absolute left-0 top-1/2 -translate-y-1/2 w-[64%] aspect-square z-10">
+        <img src="images/hero-mate.jpg" alt="Mate cebado listo para la ronda"
+             fetchpriority="high" decoding="async"
+             class="w-full h-full rounded-full object-cover">
+      </div>
+      <!-- producto secundario: bombilla, arriba a la derecha (flota) -->
+      <div class="hero-float-a absolute right-0 top-0 w-[42%] z-20">
+        <img src="images/bombilla-alpaca.jpg" alt="Bombilla de alpaca"
+             loading="lazy" decoding="async"
+             class="hero-card w-full aspect-square object-cover ring-1 ring-crema/15 rotate-3">
+      </div>
+      <!-- producto secundario: yerba, abajo a la derecha (flota) -->
+      <div class="hero-float-b absolute right-[6%] bottom-[4%] w-[35%] z-20">
+        <img src="images/yerba-canarias.jpg" alt="Yerba seleccionada"
+             loading="lazy" decoding="async"
+             class="hero-card w-full aspect-square object-cover ring-1 ring-crema/15 -rotate-2">
+      </div>
+      <!-- chip: envíos (cobre, marca) -->
       <p class="precio-tag absolute left-[1%] bottom-[9%] z-30 bg-cobre text-crema font-mono text-xs sm:text-sm font-semibold px-3 py-1.5 rounded shadow-lg">
         <svg class="w-4 h-4"><use href="#icon-truck"/></svg>
         Envíos a todo el país
       </p>
-      <!-- chip: medio de pago -->
-      <p class="absolute right-[4%] top-[45%] z-30 flex items-center gap-1.5 bg-crema text-yerba-dark font-mono text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded shadow-lg">
+      <!-- chip: medio de pago (glass) -->
+      <p class="hero-chip-glass absolute right-[4%] top-[45%] z-30 font-mono text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded">
         <svg class="w-3.5 h-3.5"><use href="#icon-card"/></svg>
         Pagás con Mercado Pago
       </p>
